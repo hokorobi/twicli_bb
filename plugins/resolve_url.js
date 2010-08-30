@@ -1,6 +1,6 @@
 /* replace short URLs with original URLs */
 (function(){
-  var re = /^http:\/\/(?:tinyurl\.com|bit\.ly|is\.gd|u\.nu|icio\.us|tr\.im|cli\.gs|twurl\.nl|url\.ie|j\.mp|ow\.ly|ff\.im|digg\.com)\//;
+  var re = /^http:\/\/(t\.co|tinyurl\.com|bit\.ly|is\.gd|u\.nu|icio\.us|tr\.im|cli\.gs|twurl\.nl|url\.ie|j\.mp|ow\.ly|ff\.im|digg\.com|tumblr\.com|goo\.gl|htn\.to)\//;
   var api = 'http://atsushaa.appspot.com/untiny/get'
   var queue = [];
   var wait = 10000;
@@ -32,10 +32,13 @@
         } else if (link.innerText === shortUrl) {
           link.innerText = truncated;
         }
+        link.className += ' resolved';
         // cleanup
         clearTimeout(task.timer);
         remove(task.script);
         queue.splice(n,1);
+        // notify to other plugins
+        callPlugins("replaceUrl", link.parentNode.parentNode, link, longUrl, shortUrl);
       }
     }
   }
@@ -61,6 +64,10 @@
     var links = elem.getElementsByTagName('a');
     for (var i = 0; i < links.length; i++) (function(a){
       if (a.parentNode.className.indexOf('status') >= 0 && re.test(a.href)) {
+        if (RegExp.$1 == 'tumblr.com') { // Specialization for tumblr.com
+          a.href = a.href.replace('tumblr.com','www.tumblr.com');
+          a.innerHTML = a.innerHTML.replace('tumblr.com','www.tumblr.com');
+        }
         setResolver(a);
       }
     })(links[i]);

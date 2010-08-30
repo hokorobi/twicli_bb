@@ -21,11 +21,7 @@ function twsjSearchShow(res) {
 	if (twsj_page++ == 1) $('tw2c').innerHTML = '';
 	twShowToNode(result, $("tw2c"), false, twsj_page > 1);
 	if (res.length > 0) {
-		var next = document.createElement("div");
-		next.id = "next";
-		next.onclick = function(){getNext(this);};
-		next.innerHTML = "▽";
-		$("tw2c").appendChild(next);
+		$("tw2c").appendChild(nextButton('next-search2'));
 	}
 	get_next_func = function(){
 		update_ele2 = loadXDomainScript('http://pcod.no-ip.org/yats/search?page=' + twsj_page +
@@ -36,7 +32,7 @@ function twsjSearchShow(res) {
 registerPlugin({
 	miscTab: function(ele) {
 		var e = document.createElement("div");
-		e.innerHTML = '<form onSubmit="twsjSearch($(\'searchj_q\').value); return false;"><a target="twitter" href="http://pcod.no-ip.org/yats/">Twitter search (yats)</a>: <input type="text" size="15" id="searchj_q"><input type="image" src="go.png"></form>';
+		e.innerHTML = '<form onSubmit="twsjSearch($(\'searchj_q\').value); return false;"><a target="twitter" href="http://pcod.no-ip.org/yats/">Twitter search (yats)</a>: <input type="text" size="15" id="searchj_q"><input type="image" src="images/go.png"></form>';
 		ele.appendChild(e);
 		var hr = document.createElement("hr");
 		hr.className = "spacer";
