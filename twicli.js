@@ -812,14 +812,14 @@ function makeHTML(tw, no_name, pid) {
 		/*ダイレクトメッセージの方向*/ (t.d_dir == 1 ? '<span class="dir">→</span> ' : t.d_dir == 2 ? '<span class="dir">←</span> ' : '') +
 		//本文 (https〜をリンクに置換 + @を本家リンク+JavaScriptに置換)
 		" <span id=\"text-" + eid + "\" class=\"status\">" +
-		text.replace(/https?:\/\/[^\/\s]*[\w!#$%&'()*+,.\/:;=?@~-]+(?=&\w+;)|https?:\/\/[^\/\s]*[\w!#$%&'()*+,.\/:;=?@~-]+|[@＠]([\/\w-]+)|(\W|_|^)([#＃])(\w+)(?=\W|$)/g, function(_,u,t,h,s){
+		text.replace(/https?:\/\/[^\/\s]*[\w!#$%&'()*+,.\/:;=?@~-]+(?=&\w+;)|https?:\/\/[^\/\s]*[\w!#$%&'()*+,.\/:;=?@~-]+|[@＠]([\/\w-]+)|([.、。　「」!]|\s|^)([#＃])([\wぁ-ヺ㐀-\u4DBF一-\u9FFF가-\uD7FF\uF900-\uFAFF０-９Ａ-Ｚａ-ｚｦ-ﾞ]+)(?=[^\wぁ-ヺ㐀-\u4DBF一-\u9FFF가-\uD7FF\uF900-\uFAFF０-９Ａ-Ｚａ-ｚｦ-ﾞ]|$)/g, function(_,u,t,h,s){
 				if (!u && !h) {
 					var paren = '';
 					if (_.substr(_.length-1) == ')') { // 末尾の")"はURLに含めない
 						_ = _.substr(0, _.length-1);
 						paren = ')';
 					}
-					return "<a class=\"link\" target=\"_blank\" href=\""+_+"\" onclick=\"return link(this);\">"+_+"</a>"+paren;
+					return "<a class=\"link\" target=\"_blank\" href=\""+_.replace(/\"/g, '%22')+"\" onclick=\"return link(this);\">"+_+"</a>"+paren;
 				}
 				if (h == "#" || h == "＃") {
 					if (s.match(/^\d+$/)) return _;
