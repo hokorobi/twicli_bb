@@ -5,9 +5,11 @@
 .match-NG, #pickup-NG { display: none !important; }
 
 /* フォントサイズ、行間、サムネイルの大きさをお好みに設定してください */
+body, #fst, #menu a { font-family: "ヒラギノ角ゴProN", sans-serif; }
 .status { font-size: 12px; }
 .prop { font-size: 10px; }
 .status, .prop, #tw2h, #tw2h table { line-height: 1.5; }
+#fst { line-height: 1.5; }
 .thumbnail-image { max-width: 150px; max-height: 150px; }
 
 body, table { line-height: 1; }
@@ -28,13 +30,12 @@ a:hover { text-decoration: underline; }
 #tw > div > div, #re > div > div, #tw2c > div > div {
  padding: 4px 20px 2px 4px; border-bottom: 1px solid #ccc; }
 .uicon { margin: 0; }
-.uid { display: block; position: relative; width: 32px; height: 32px;
- float: left; margin: 0 6px 0 -32px; text-indent: -999px; text-decoration: none; }
+.uid { display: block; width: 32px; height: 32px; float: left; margin: 0 6px 0 -32px; text-indent: -999px; position: relative; z-index: 1; text-decoration: none; }
 .uname { display: none; }
 .fav { margin-right: -16px; width: 16px; height: 16px; }
 .utils { display: block; margin: 0 -16px 2px 0; }
 #rep .fav, #rep .utils { margin-right: 0; }
-.utils span { vertical-align: middle; }
+.utils span { vertical-align: bottom; }
 .utils .prop { display: block; float: none; text-align: left; margin: 3px 6px -18px 0;
  position: relative; top: 2px; }
 .utils .button, #rep a.close { display: block; float: right;
@@ -68,7 +69,7 @@ img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
 #counter-p2 { border-left: solid 4px #000; }
 #counter-p1, #counter-p2 { border-top-width: 7px; }
 
-#rep { left: 20px; right: 6px; width: auto; padding: 4px; }
+#rep { left: 20px; right: 6px; z-index: 3; width: auto; padding: 4px; }
 #rep a.close { float: left; margin: 0 4px 4px 0; overflow: hidden; }
 #rep a.close:before { content: "\21d4"; display: block; }
 #rep a.close:first-child:before { content: "\00d7"; }
@@ -76,7 +77,8 @@ img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
 #rep, #popup { background: #eee; border: solid 3px #666;
  border-radius: 10px; -moz-border-radius: 10px; }
 
-#popup { padding: 6px 0; font-size: 11px; }
+#popup_hide { z-index: 5; }
+#popup { padding: 6px 0; z-index: 7; font-size: 11px; }
 #popup a { background: transparent; border: none; margin: 0; padding: 2px 6px; }
 #popup a:hover { background: #35d; color: #fff; }
 #popup hr { background: #ccc; border: none; height: 1px; margin: 4px 1px; }
