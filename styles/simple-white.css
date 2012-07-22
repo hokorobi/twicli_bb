@@ -85,3 +85,13 @@ img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
 .thumbnail-image:hover { border: none; width: auto; opacity: 0.8; }
 .thumbnail-link { margin: 4px 0 0; text-align: center; border: none; display: block; float: none; }
 .thumbnail-link a { margin: 0 10px; background: #fff; }
+
+/* タブ名にショートカットキーを表示 */
+#menu a:nth-of-type(1):after { content:":3" }
+#menu a:nth-of-type(2):after { content:":4" }
+#menu a:nth-of-type(3):after { content:":5" }
+#menu a:nth-of-type(4):after { content:":6" }
+#menu a:nth-of-type(5):after { content:":7" }
+#menu a:nth-of-type(6):after { content:":8" }
+#menu a:nth-of-type(7):after { content:":9" }
+#menu a:nth-of-type(8):after { content:":0" }
