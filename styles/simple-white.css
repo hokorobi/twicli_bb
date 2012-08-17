@@ -9,6 +9,8 @@ body, #fst, #menu a { font-family: "ヒラギノ角ゴProN", sans-serif; }
 .status { font-size: 12px; }
 .prop { font-size: 10px; }
 .status, .prop, #tw2h, #tw2h table { line-height: 1.5; }
+#tw2h > .tabcmd { position: fixed; width: 100%; }
+#tw2c { margin-top: 20px; }
 #fst { line-height: 1.5; }
 .thumbnail-image { max-width: 150px; max-height: 150px; }
 
