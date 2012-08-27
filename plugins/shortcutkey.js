@@ -79,19 +79,15 @@ var shortcutkey_plugin = {
 			case 52: // 4 : @タブ
 				switchReply();
 				return false;
-			case 53: // 5 : ユーザタブ
-				switchUser();
-				return false;
-			case 54: // 6 : Dタブ
-				switchDirect();
-				return false;
-			case 55: // 7 : +タブ
+			case 53: // 5 : +タブ
 				switchMisc();
 				return false;
-			case 56: // 8 : タブ6
-			case 57: // 9 : タブ7
-			case 48: // 0 : タブ8
-				var num = code == 48 ? 7 : code - 51;
+			case 54: // 6 : タブ6
+			case 55: // 7 : タブ7
+			case 56: // 8 : タブ8
+			case 57: // 9 : タブ9
+			case 48: // 0 : タブ10
+				var num = code == 48 ? 9 : code - 49;
 				var menu = $('menu2').childNodes[num];
 				if (!menu || !menu.onclick) return true;
 				try {
