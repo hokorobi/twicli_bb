@@ -17,7 +17,7 @@ function twsSearch(qn, no_switch, max_id) {
 	var name = qn2;
 	var q = qn2;
 	if (colon > 0) {
-		name = qn2.substr(0, colon);
+		name = qn2.substr(0,colon);
 		q = qn2.substr(colon+1);
 	}
 	var lang = null;
