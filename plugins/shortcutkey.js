@@ -73,17 +73,11 @@ var shortcutkey_plugin = {
 				else
 					shortcutkey_plugin.deselectTweet();
 				return false;
-			case 49: // 1 : TLタブ
+			case 51: // 3 : TLタブ
 				switchTL();
 				return false;
-			case 50: // 2 : @タブ
+			case 52: // 4 : @タブ
 				switchReply();
-				return false;
-			case 51: // 3 : ユーザタブ
-				switchUser();
-				return false;
-			case 52: // 4 : Dタブ
-				switchDirect();
 				return false;
 			case 53: // 5 : +タブ
 				switchMisc();
