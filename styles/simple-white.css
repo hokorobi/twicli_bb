@@ -26,6 +26,7 @@ body, td, #user_info td, #rep, #popup { font-size: 12px; }
 .emp { background-color: #ffd0de; }
 a { color: #088253; text-decoration: none; }
 a:hover { text-decoration: underline; }
+.selected { background-color: #cef !important; }
 
 #fst { margin: 0 0 -1px; height: 33px; }
 #tw > div { border: none; }
