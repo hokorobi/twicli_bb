@@ -80,7 +80,7 @@ registerPlugin({
 		else if (url.match(/^(http:\/\/gyazo.com\/\w+)/)) {
 			addThumbnail(elem, 'http://gyazo-thumbnail.appspot.com/thumbnail?url='+url, url);
 		}
-		else if (url.match(/^http:\/\/(?:www\.youtube\.com\/watch\?.*v=|youtu\.be\/)([\w\-]+)/)) {
+		else if (url.match(/^https?:\/\/(?:www\.youtube\.com\/watch\?.*v=|youtu\.be\/)([\w\-]+)/)) {
 			var id = RegExp.$1;
 			addThumbnail(elem, 'http://i.ytimg.com/vi/' + id + '/default.jpg', url);
 		}
@@ -93,7 +93,7 @@ registerPlugin({
 			else
 				addThumbnail(elem, 'http://tn-skr' + host + '.smilevideo.jp/smile?i=' + id, url);
 		}
-		else if (url.match(/^(http:\/\/instagr\.am\/p\/[\w\-]+)\/?$/)) {
+		else if (url.match(/^(http:\/\/(?:instagr\.am|instagram\.com)\/p\/[\w\-]+)\/?$/)) {
 			addThumbnail(elem, RegExp.$1+'/media/?size=t', url);
 		}
 		else if (url.match(/^(http:\/\/picplz.com\/\w+)/)) {
