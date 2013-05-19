@@ -90,15 +90,13 @@ var shortcutkey_plugin = {
 			case 52: // 4 : @タブ
 				switchReply();
 				return false;
-			case 53: // 5 : +タブ
-				switchMisc();
-				return false;
-			case 54: // 6 : タブ6
-			case 55: // 7 : タブ7
-			case 56: // 8 : タブ8
-			case 57: // 9 : タブ9
-			case 48: // 0 : タブ10
-				var num = code == 48 ? 9 : code - 49;
+			case 53: // 5 : タブ6
+			case 54: // 6 : タブ7
+			case 55: // 7 : タブ8
+			case 56: // 8 : タブ9
+			case 57: // 9 : タブ10
+			case 48: // 0 : タブ11
+				var num = code == 48 ? 10 : code - 48;
 				var menu = $('menu2').childNodes[num];
 				if (!menu || !menu.onclick) return true;
 				try {
