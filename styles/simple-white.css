@@ -5,7 +5,7 @@
 .match-NG, #pickup-NG { display: none !important; }
 
 /* フォントサイズ、行間、サムネイルの大きさをお好みに設定してください */
-body, #fst, #menu a { font-family: "ヒラギノ角ゴProN", sans-serif; }
+body, #fst, #menu a { font-family: "ヒラギノ角ゴProN", "メイリオ", sans-serif; }
 .status { font-size: 12px; }
 .prop { font-size: 10px; }
 .status, .prop, #tw2h, #tw2h table { line-height: 1.5; }
@@ -18,7 +18,7 @@ body, table { line-height: 1; }
 body, td, #user_info td, #rep, #popup { font-size: 12px; }
 #pref textarea { font-size: 12px; }
 #tw, #re, #tw2 { font-size: 11px; }
-#fst { font-size: 11px; font-family: "ヒラギノ角ゴPro", sans-serif; }
+#fst { font-size: 11px; }
 #tw, #re, #tw2 { background: #fefefe; }
 #tw > div:first-child { background: #ffeef4; }
 .tome { background: #ffffe4; }
