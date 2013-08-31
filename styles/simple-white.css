@@ -1,0 +1,103 @@
+/**
+ * simple-white.css
+ * http://d.hatena.ne.jp/scientre/20110101/twicli_stylesheet
+ */
+.match-NG, #pickup-NG { display: none !important; }
+
+/* フォントサイズ、行間、サムネイルの大きさをお好みに設定してください */
+body, #fst, #menu a { font-family: "ヒラギノ角ゴProN", "メイリオ", sans-serif; }
+.status { font-size: 12px; }
+.prop { font-size: 10px; }
+.status, .prop, #tw2h, #tw2h table { line-height: 1.5; }
+#tw2h > .tabcmd { position: fixed; width: 100%; }
+#tw2c { margin-top: 20px; }
+#fst { line-height: 1.5; }
+.thumbnail-image { max-width: 150px; max-height: 150px; }
+
+body, table { line-height: 1; }
+body, td, #user_info td, #rep, #popup { font-size: 12px; }
+#pref textarea { font-size: 12px; }
+#tw, #re, #tw2 { font-size: 11px; }
+#fst { font-size: 11px; }
+#tw, #re, #tw2 { background: #fefefe; }
+#tw > div:first-child { background: #ffeef4; }
+.tome { background: #ffffe4; }
+.fromme { background: #f2f2f4; }
+.emp { background-color: #ffd0de; }
+a { color: #088253; text-decoration: none; }
+a:hover { text-decoration: underline; }
+.selected { background-color: #cef !important; }
+
+#fst { margin: 0 0 -1px; height: 33px; }
+#tw > div { border: none; }
+#tw > div > div, #re > div > div, #tw2c > div > div {
+ padding: 4px 20px 2px 4px; border-bottom: 1px solid #ccc; }
+.uicon { margin: 0; }
+.uid { display: block; width: 32px; height: 32px; float: left; margin: 0 6px 0 -32px; text-indent: -999px; position: relative; z-index: 1; text-decoration: none; }
+.uname { display: none; }
+.fav { margin-right: -16px; width: 16px; height: 16px; }
+.utils { display: block; margin: 0 -16px 2px 0; }
+#rep .fav, #rep .utils { margin-right: 0; }
+.utils span { vertical-align: bottom; }
+.utils .prop { display: block; float: none; text-align: left; margin: 3px 6px -18px 0;
+ position: relative; top: 2px; }
+.utils .button, #rep a.close { display: block; float: right;
+ margin: 2px 0 2px 6px; padding: 0; line-height: 13px;
+ width: 13px; height: 13px; font-size: 10px; text-align: center;
+ background: #deded8; color: #666; border: solid 1px #ccc;
+ -moz-border-radius: 13px; border-radius: 13px }
+.utils .button:hover { text-decoration: none; }
+.utils .button img { position: relative; left: -1px; top: -2px; }
+.utils .button:last-child /* popup menu */ { position: relative; }
+img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
+.utils .button { visibility: hidden; }
+#tw > div > div:hover img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
+#re > div > div:hover img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
+#tw2 > div > div > div:hover img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
+#tw > div > div:hover .utils .button,
+#re > div > div:hover .utils .button,
+#tw2 > div > div > div:hover .utils .button,
+#rep .utils .button, #rep .fav { visibility: visible; }
+.get-next { color: #fff; line-height: 2; border-bottom: none !important; }
+
+#control { border-color: #92928e; }
+#menu a { background: #deded8; color: #888; border-color: #90908e;
+ font-size: 11px; font-weight: bold; }
+#menu a.sel { background: #f4f4f2; color: #222; border-bottom-color: #fff; }
+#menu a.new { background: #fcfcd0; }
+#counter-div { opacity: 0.6; width: 36px; }
+#counter { background: #000; font-size: 13px; line-height: 16px; height: 17px;
+ -moz-border-radius: 5px; }
+#counter-p1 { border-right: solid 4px #000; }
+#counter-p2 { border-left: solid 4px #000; }
+#counter-p1, #counter-p2 { border-top-width: 7px; }
+
+#rep { left: 20px; right: 6px; z-index: 3; width: auto; padding: 4px; }
+#rep a.close { float: left; margin: 0 4px 4px 0; overflow: hidden; }
+#rep a.close:before { content: "\21d4"; display: block; }
+#rep a.close:first-child:before { content: "\00d7"; }
+#reps { clear: left; }
+#rep, #popup { background: #eee; border: solid 3px #666;
+ border-radius: 10px; -moz-border-radius: 10px; }
+
+#popup_hide { z-index: 5; }
+#popup { padding: 6px 0; z-index: 7; font-size: 11px; }
+#popup a { background: transparent; border: none; margin: 0; padding: 2px 6px; }
+#popup a:hover { background: #35d; color: #fff; }
+#popup hr { background: #ccc; border: none; height: 1px; margin: 4px 1px; }
+
+.thumbnail-image { border: none; width: auto; height: auto; vertical-align: middle; }
+.thumbnail-image:hover { border: none; width: auto; opacity: 0.8; }
+.thumbnail-link { margin: 4px 0 0; text-align: center; border: none; display: block; float: none; }
+.thumbnail-link a { margin: 0 10px; background: #fff; }
+
+/* タブ名にショートカットキーを表示 */
+#menu a:nth-of-type(1):after { content:":3" }
+#menu a:nth-of-type(2):after { content:":4" }
+#menu a:nth-of-type(6):after { content:":5" }
+#menu a:nth-of-type(7):after { content:":6" }
+#menu a:nth-of-type(8):after { content:":7" }
+#menu a:nth-of-type(9):after { content:":8" }
+#menu a:nth-of-type(10):after { content:":9" }
+#menu a:nth-of-type(11):after { content:":0" }
+

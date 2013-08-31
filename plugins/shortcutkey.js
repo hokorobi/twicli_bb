@@ -84,27 +84,19 @@ var shortcutkey_plugin = {
 				else
 					shortcutkey_plugin.deselectTweet();
 				return false;
-			case 49: // 1 : TLタブ
+			case 51: // 3 : TLタブ
 				switchTL();
 				return false;
-			case 50: // 2 : @タブ
+			case 52: // 4 : @タブ
 				switchReply();
 				return false;
-			case 51: // 3 : ユーザタブ
-				switchUser();
-				return false;
-			case 52: // 4 : Dタブ
-				switchDirect();
-				return false;
-			case 53: // 5 : +タブ
-				switchMisc();
-				return false;
-			case 54: // 6 : タブ6
-			case 55: // 7 : タブ7
-			case 56: // 8 : タブ8
-			case 57: // 9 : タブ9
-			case 48: // 0 : タブ10
-				var num = code == 48 ? 9 : code - 49;
+			case 53: // 5 : タブ6
+			case 54: // 6 : タブ7
+			case 55: // 7 : タブ8
+			case 56: // 8 : タブ9
+			case 57: // 9 : タブ10
+			case 48: // 0 : タブ11
+				var num = code == 48 ? 10 : code - 48;
 				var menu = $('menu2').childNodes[num];
 				if (!menu || !menu.onclick) return true;
 				try {
@@ -221,7 +213,14 @@ var shortcutkey_plugin = {
 						for (i = 0; i < target.childNodes.length; i++) {
 							var target2 = target.childNodes[i];
 							if (target2.tagName == 'A' && target2.innerHTML.substr(0,4) == 'http') {
-								if (link(target2)) window.open(target2.href, "_blank");
+								if (link(target2)) (function(url){
+									var a = document.createElement("a");
+									a.href = url;
+									var evt = document.createEvent("MouseEvents");
+									evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
+									a.dispatchEvent(evt);
+									return true;
+								})(target2.href);
 							}
 						}
 						break;
