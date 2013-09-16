@@ -131,6 +131,9 @@ registerPlugin({
 		else if (url.match(/^http:\/\/cache\.gyazo\.com/)) {
 			addThumbnail(elem, url, url);
 		}
+		else if (url.match(/^http:\/\/gifzo\.net/)) {
+			addThumbnail(elem, url + '.gif' , url);
+		}
 	}
 });
 
