@@ -8,11 +8,11 @@ function charRef(s) {
 	return ele.firstChild.nodeValue;
 }
 // フォームをシリアライズ
-function serializeForm(f) {
+function serializeForm(f, filter) {
 	var url = '';
 	for (var e = 0; e < f.elements.length; e++) {
 		var input = f.elements[e];
-		if (input.name && input.value)
+		if (input.name && input.value && (!filter || input.name.indexOf(filter) >= 0))
 			url += (url == '' ? '?' : '&') + input.name + "=" + OAuth.percentEncode(input.value.replace(/\r?\n/g, "\r\n"));
 	}
 	return url;
@@ -36,8 +36,26 @@ function setupOAuthArgs(args) {
 function setupOAuthURL(url, post) {
 	if (url.indexOf(twitterAPI) != 0) return url;
 	var post_agent = !post && url.indexOf(twitterAPI+'statuses/update.json') == 0;
+	var media_upload = url.indexOf('update_with_media.json') >= 0 && post;
+	var nosign = [];
 	url = url.split("?");
+	if (post && url[1] && url[1].match(/(^|&)(status=[^&]+)/) && RegExp.$2.indexOf('%2A') >= 0) {
+		// "*"(%2A)はPOSTデータではURLEncodeされずに送信されOAuthエラーとなるため、URL内に含める（statusにのみ対応）
+		url[0] += "?" + RegExp.$2;
+		url[1] = url[1].replace(RegExp.$1+RegExp.$2, '');
+	}
 	setupOAuthArgs(url[1]);
+	if (media_upload) {
+		var cs = document.request.childNodes;
+		for (var e = cs.length - 1; e >= 0; e--) {
+			if (cs[e].tagName == 'INPUT' && cs[e].name.indexOf('oauth') < 0 || cs[e] === $('api_args')) {
+				nosign.push(cs[e]);
+				cs[e].parentNode.removeChild(cs[e]);
+			}
+		}
+		document.request.enctype = 'multipart/form-data';
+	} else
+		document.request.enctype = 'application/x-www-form-urlencoded';
 	document.request.method = (post || post_agent) ? 'POST' : 'GET';
 	document.etc.URL.value = url[0];
 	consumer.signForm(document.request, document.etc);
@@ -46,7 +64,15 @@ function setupOAuthURL(url, post) {
 		var sid = ['','2'][((new Date).getTime()/1000/60/60/12|0)%2];
 		url = url.replace(twitterAPI + 'statuses/update.json', (use_ssl?'https':'http')+'://tweet-agent'+sid+'.appspot.com/post');
 	}
-	return url + (!post ? serializeForm(document.request) : '');
+	for (var e = 0; e < nosign.length; e++)
+		document.request.appendChild(nosign[e]);
+	if (media_upload) {
+		var media = $("media");
+		media.parentNode.removeChild(media);
+		media.style.display = "none";
+		$("api_args").appendChild(media);
+	}
+	return url + (!post || media_upload ? serializeForm(document.request, media_upload && 'oauth') : '');
 }
 // クロスドメインJavaScript呼び出し(Twitter APIはOAuth認証)
 function loadXDomainScript(url, ele) {
@@ -221,7 +247,7 @@ function scrollToY(y, total, start) {
 	scroll_timer = setTimeout(function(){scrollToY(y, total, start)}, 20);
 }
 function scrollToDiv(d, top_margin) {
-	top_margin = top_margin || 0;
+	top_margin = top_margin || $('control').clientHeight+1;
 	var top = cumulativeOffset(d)[1];
 	var h = d.offsetHeight;
 	var sc_top = document.body.scrollTop || document.documentElement.scrollTop;
@@ -289,7 +315,7 @@ function _(key) {
 }
 
 // version check
-document.twicli_js_ver = 4;
+document.twicli_js_ver = 5;
 if (!document.twicli_html_ver || document.twicli_html_ver < document.twicli_js_ver) {
 	if (location.href.indexOf('?') < 0) {
 		location.href = location.href + '?' + document.twicli_js_ver;
@@ -349,6 +375,7 @@ var no_geotag = parseInt(readCookie('no_geotag') || "0");			// GeoTaggingを無�
 var use_ssl = parseInt(readCookie('use_ssl') || "1");				// SSLを使用
 var post_via_agent = parseInt(readCookie('post_via_agent') || "1");		// tweet-agent経由でツイート
 var show_header_img = parseInt(readCookie('show_header_img') || "1");	// ヘッダ画像表示
+var dnd_image_upload = parseInt(readCookie('dnd_image_upload') || (navigator.userAgent.indexOf('WebKit') >= 0 ? "1" : "0"));	// ドラッグ&ドロップで画像アップロード
 if (cookieVer<18) use_ssl = 1;
 // TL管理用
 var cur_page = 1;				// 現在表示中のページ
@@ -400,6 +427,7 @@ var tw_limits = {};
 var t_co_maxstr = "http://t.co/********";
 var api_resources = ['statuses','friendships','friends','followers','users','search','lists','favorites'];
 var first_update = true;
+var reset_timer = null;
 
 // loading表示のコントロール
 function loading(start) {
@@ -530,7 +558,7 @@ function press(e) {
 		!decr_enter && (e.ctrlKey || e.shiftKey) || decr_enter && !(e.ctrlKey || e.shiftKey)) )
 			return true;
 	var st = document.frm.status;
-	if (st.value == '') {
+	if (st.value == '' && !($('media')&&$('media').value)) {
 		update();
 		return false;
 	}
@@ -555,16 +583,19 @@ function press(e) {
 	st.select();
 	var text = st.value;
 	var do_post = function(r){
-		(r && post_via_agent ? xds.load : enqueuePost)(twitterAPI + 'statuses/update.json?'+
+		var media = $('media')&&$('media').value;
+		(r && post_via_agent && !media ? xds.load : enqueuePost)(twitterAPI +
+				'statuses/update' + (media ? '_with_media' : '') + '.json?'+
 				'status=' + OAuth.percentEncode(st.value) +
 				(geo && geo.coords ?  "&display_coordinates=true&lat=" + geo.coords.latitude +
 										"&long=" + geo.coords.longitude : "") +
 				(in_reply_to_status_id ? "&in_reply_to_status_id=" + in_reply_to_status_id : ""),
-				function(tw){ if (tw && tw.errors) error('', tw); else resetFrm(); twShow([tw]); },
-				function(err){ if (err) return error('', err); if (r && post_via_agent) do_post(false); },
+			function(tw){ if (tw && tw.errors) error('', tw); else resetFrm(); twShow([tw]); if (media && post_via_agent) setTimeout(update, 1000); },
+			function(err){ if (err) return error('', err); if (media && post_via_agent) { resetFrm(); setTimeout(update, 1000); } else if (r && post_via_agent) do_post(false); },
 				retry);
 	};
 	do_post(true);
+	callPlugins("postQueued", text);
 	in_reply_to_user = in_reply_to_status_id = null;
 	return false;
 }
@@ -619,9 +650,11 @@ function updateCount() {
 // フォームの初期化
 function resetFrm(arg) {
 	document.frm.reset();
+	$("api_args").innerHTML = "";
+	if ($("imgup")) $("option").removeChild($("imgup"));
 	setReplyId(false);
 	if ($("counter-div").style.display == "block") updateCount();
-	setFstHeight(min_fst_height);
+	setFstHeight(min_fst_height, true);
 	callPlugins("resetFrm", arg);
 }
 // reply先の設定/解除
@@ -677,7 +710,7 @@ function dispReply(user, id, ele, cascade) {
 	d.className += ' emp';
 	setTimeout(function(){d.className = d.className.replace(' emp','')}, 2000);
 }
-// reply先をoverlay表示 (Timelineに無い場合)
+// reply先をoverlay表示
 function dispReply2(tw) {
 	if (tw.errors) return error('', tw);
 	var id = tw.id_str || tw.id;
@@ -695,7 +728,7 @@ function dispReply2(tw) {
 		$('reps').appendChild(document.createElement('hr'));
 	$('reps').appendChild(el);
 	$('rep').style.display = "block";
-	scrollToDiv($('rep'));
+	scrollToDiv(el);
 	user_pick2 = tw.user.screen_name;
 	var in_reply_to = tw.in_reply_to_status_id_str || tw.in_reply_to_status_id;
 	if (in_reply_to) {
@@ -933,8 +966,7 @@ function makeHTML(tw, no_name, pid, userdesc) {
 }
 // ユーザ情報のHTML表現を生成
 function makeUserInfoHTML(user) {
-	return '<a class="uicona" target="twitter" href="' + twitterURL + 'account/profile_image/'+
-			user.screen_name+'"><img class="uicon2" src="' + user.profile_image_url.replace('normal.','reasonably_small.') + '" onerror="if(this.src!=\''+user.profile_image_url+'\')this.src=\''+user.profile_image_url+'\'"></a><div id="profile"><div>' +
+	return '<a class="uicona" target="twitter" href="' + user.profile_image_url.replace('_normal', '') +'"><img class="uicon2" src="' + user.profile_image_url.replace('normal.','reasonably_small.') + '" onerror="if(this.src!=\''+user.profile_image_url+'\')this.src=\''+user.profile_image_url+'\'"></a><div id="profile"><div>' +
 			(user.verified ? '<img class="verified" alt="verified" src="images/verified.png">' : '') +
 			(user.protected ? '<img class="lock" alt="lock" src="images/icon_lock.png">' : '') +
 			'<b>@' + user.screen_name + '</b> / <b>' + user.name + '</b></div>' +
@@ -1094,7 +1126,7 @@ function twDirectShow() {
 function checkDirect() {
 	direct_ele = xds.load_default(twitterAPI + 'direct_messages.json' +
 							'?suppress_response_codes=true', twDirectCheck, direct_ele);
-	update_direct_counter = 4;
+	update_direct_counter = 2;
 }
 function twDirectCheck(tw) {
 	if (tw.errors) return error('', tw);
@@ -1241,7 +1273,7 @@ function twOldReply(tw) {
 }
 function twShow2(tw) {
 	var user_info = $("user_info");
-	if ((tw.errors && tw.errors[0].message == "Not authorized" || tw.error && tw.error == "Not authorized" || tw.length < 1 ) && !!user_info && !fav_mode && user_info.innerHTML == '') {
+	if ((tw.errors && tw.errors[0].message.indexOf("Not authorized") >= 0 || tw.error && tw.error.indexOf("Not authorized") >= 0 || tw.length < 1 ) && !!user_info && !fav_mode && user_info.innerHTML == '') {
 		xds.load_for_tab(twitterAPI + 'users/show.json?screen_name=' + last_user +
 			'&suppress_response_codes=true', twUserInfo);
 		return;
@@ -1574,6 +1606,7 @@ function switchDirect() {
 function switchMisc() {
 	switchTo("misc");
 	$("tw2h").innerHTML = '<br><a id="clientname" target="twitter" href="index.html"><b>twicli</b></a> : A browser-based Twitter client<br><small id="copyright">Copyright &copy; 2008-2013 NeoCat</small><hr class="spacer">' +
+	'<a href="javascript:showMediaOption()">' + _('Upload images') + '</a><br>' +
 					'<form id="switchuser" onSubmit="switchUser($(\'user_id\').value); return false;">'+
 					_('show user info')+' : @<input type="text" size="15" id="user_id" value="' + myname + '"><input type="image" src="images/go.png"></form>' +
 					'<a id="logout" href="javascript:logout()"><b>'+_('Log out')+'</b></a><hr class="spacer">' +
@@ -1598,6 +1631,7 @@ function switchMisc() {
 					'<input type="checkbox" name="use_ssl"' + (use_ssl?" checked":"") + '>'+_('Use HTTPS')+'<br>' +
 					'<input type="checkbox" name="post_via_agent"' + (post_via_agent?" checked":"") + '>'+_('Tweet via GAE server')+'<br>' +
 					'<input type="checkbox" name="show_header_img"' + (show_header_img?" checked":"") + '>'+_('Show header image')+'<br>' +
+					(navigator.userAgent.indexOf('WebKit') >= 0 ? '<input type="checkbox" name="dnd_image_upload"' + (dnd_image_upload?" checked":"") + '>'+_('Drag&drop image upload')+'<br>' : '') +
 					_('Footer')+': <input name="footer" size="20" value="' + footer + '"><br>' +
 					_('Plugins')+':<br><textarea cols="30" rows="4" name="list">' + pluginstr + '</textarea><br>' +
 					_('user stylesheet')+':<br><textarea cols="30" rows="4" name="user_style">' + user_style + '</textarea><br>' +
@@ -1634,11 +1668,12 @@ function setPreps(frm) {
 	use_ssl = frm.use_ssl.checked?1:0;
 	post_via_agent = frm.post_via_agent.checked;
 	show_header_img = frm.show_header_img.checked;
+	dnd_image_upload = frm.dnd_image_upload && frm.dnd_image_upload.checked;
 	user_style = frm.user_style.value;
 	try {
 		$('usercss').innerHTML = user_style;
 	} catch(e) {
-		if (console && console.log)
+		if (window.console && console.log)
 			console.log('Cannot set user style:' + e);
 	}
 	resetUpdateTimer();
@@ -1661,6 +1696,7 @@ function setPreps(frm) {
 	writeCookie('use_ssl', use_ssl?1:0, 3652);
 	writeCookie('post_via_agent', post_via_agent?1:0, 3652);
 	writeCookie('show_header_img', show_header_img?1:0, 3652);
+	writeCookie('dnd_image_upload', dnd_image_upload?1:0, 3652);
 	writeCookie('tw_plugins', new String(" " + frm.list.value), 3652);
 	writeCookie('user_style', new String(frm.user_style.value), 3652);
 	callPlugins('savePrefs', frm);
@@ -1669,6 +1705,12 @@ function setPreps(frm) {
 		twitterAPI = twitterAPI.replace('http', 'https');
 	else
 		twitterAPI = twitterAPI.replace('https', 'http');
+}
+// 画像アップロードボックスの表示
+function showMediaOption() {
+	if (!$('media'))
+		$("option").innerHTML += '<form id="imgup">'+_('Images')+': <div id="media_div"><input id="media" type="file" name="media[]" multiple onclick="var m=$(\'media\').ondrop; if(m) m()"</div><img id="imgclr" src="images/clr.png" onclick="$(\'option\').removeChild($(\'imgup\'));setFstHeight(null,true)"></td></tr></table>';
+	setFstHeight(null, true);
 }
 // 初期化
 function init() {
@@ -1682,6 +1724,32 @@ function init() {
 	// 初回アップデート
 	callPlugins("init");
 	setTimeout(auth, 0);
+	// ファイルドロップで画像投稿 - 現状ではWebKitでしかうまく動作しない
+	if (navigator.userAgent.indexOf('WebKit') < 0 || !dnd_image_upload) return;
+	document.ondragenter = function(e) {
+		e.preventDefault();
+		showMediaOption();
+		var m = $('media');
+		var of = cumulativeOffset(m);
+		m.style.position = "fixed";
+		m.style.zIndex = 20;
+		m.style.left = m.style.top = 0;
+		m.style.width = m.style.height = "100%";
+		m.style.paddingLeft = of[0] + "px";
+		m.style.paddingTop = of[1] + "px";
+		m.ondragenter = function(e) { e.stopPropagation(); };
+		m.ondrop = function(e) {
+			if (e) e.stopPropagation();
+			m.style.position = "static";
+			m.style.width = m.style.height = "auto";
+			m.style.paddingLeft = m.style.paddingTop = 0;
+			setFstHeight(null, true);
+		};
+		m.ondragleave = function(e) {
+			e.preventDefault();
+			m.ondrop(e);
+		};
+	}
 }
 // プラグイン
 var plugin_name;
