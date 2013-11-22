@@ -210,33 +210,23 @@ var shortcutkey_plugin = {
 				for (var i = 0; i < selected.childNodes.length; i++) {
 					var target = selected.childNodes[i]
 					if (target.id && target.id.substr(0,5) == 'text-') {
-						for (i = 0; i < target.childNodes.length; i++) {
+						for (i = target.childNodes.length - 1; i >= 0; i--) {
 							var target2 = target.childNodes[i];
-							if (target2.tagName == 'A' && target2.innerHTML.substr(0,4) == 'http') {
-								if (link(target2)) (function(url){
-									var a = document.createElement("a");
-									a.href = url;
-									var evt = document.createEvent("MouseEvents");
-									evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
-									a.dispatchEvent(evt);
-									return true;
-								})(target2.href);
-							}
-						}
-						break;
-					}
-				}
-				return false;
-			case 86+lower: // v : 写真等のリンク先内容を表示(View links)
-				if (!selected) return true;
-				for (var i = 0; i < selected.childNodes.length; i++) {
-					var target = selected.childNodes[i]
-					if (target.id && target.id.substr(0,5) == 'text-') {
-						for (i = 0; i < target.childNodes.length; i++) {
-							var target2 = target.childNodes[i];
-							if (target2.tagName == 'A' && target2.className == 'button' && target2.onclick) {
-								target2.onclick();
-								break;
+							if (target2.tagName == 'A') {
+								if (target2.className == 'button' && target2.onclick) {
+									target2.onclick();
+									break;
+								}
+								if (target2.innerHTML.substr(0,4) == 'http') {
+									if (link(target2)) (function(url){
+										var a = document.createElement("a");
+										a.href = url;
+										var evt = document.createEvent("MouseEvents");
+										evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
+										a.dispatchEvent(evt);
+										return true;
+									})(target2.href);
+								}
 							}
 						}
 						break;
