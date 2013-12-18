@@ -129,9 +129,6 @@ registerPlugin({
 						addThumbnail(elem, x.thumbnail, x.link || url, x.title);
 				});
 		}
-		else if (url.match(/^http:\/\/miil\.me\/p\//)) {
-			addThumbnail(elem, url + '.jpeg?size=240', url);
-		}
 		else if (url.match(/^http:\/\/gifzo\.net/)) {
 			addThumbnail(elem, url + '.gif' , url);
 		}
