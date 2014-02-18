@@ -39,19 +39,6 @@
 					return;
 				}
 			}
-			if (lng.match(/^(https?:\/\/www\.slideshare\.net\/[-_0-9a-zA-Z.]+\/[-_0-9a-zA-Z.]+)/)) {
-				link.embedsrc = true;
-				xds.load("http://www.slideshare.net/api/oembed/2?url=" + RegExp.$1 + "&format=jsonp",
-						function(x) {
-							createAnchor(link, function(){
-								dispEmbedSrc("http:\/\/www\.slideshare\.net\/slideshow\/embed_code\/"
-									+ x.slideshow_id,
-									link, 'iframe');
-								return false;
-							});
-							
-						});
-			}
 		}
 	});
 }());
