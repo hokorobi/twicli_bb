@@ -578,7 +578,7 @@ function press(e) {
 	last_in_reply_to_user = in_reply_to_user;
 	last_in_reply_to_status_id = in_reply_to_status_id;
 	if (st.value.indexOf("@"+in_reply_to_user) < 0)
-		setReplyId(false); // "."で始まるか"@ユーザ名"が含まれていない時はin_reply_to指定無し
+		setReplyId(false); // "@ユーザ名"が含まれていない時はin_reply_to指定無し
 	callPlugins("post", st.value);
 	st.value += footer;
 	st.select();
