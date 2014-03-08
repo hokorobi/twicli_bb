@@ -51,6 +51,7 @@ a:hover { text-decoration: underline; }
 .utils .button:last-child /* popup menu */ { position: relative; }
 img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
 .utils .button { visibility: hidden; }
+.inrep .utils .button.reply { visibility: visible; }
 #tw > div > div:hover img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
 #re > div > div:hover img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
 #tw2 > div > div > div:hover img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
