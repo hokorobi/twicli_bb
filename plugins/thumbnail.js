@@ -129,6 +129,12 @@ registerPlugin({
 						addThumbnail(elem, x.thumbnail, x.link || url, x.title);
 				});
 		}
+		else if (url.match(/^http:\/\/gifzo\.net/)) {
+			addThumbnail(elem, url + '.gif' , url);
+		}
+		else if (url.match(/(\.png|\.jpg|\.gif)$/)) {
+			addThumbnail(elem, url, url);
+		}
 	}
 });
 
