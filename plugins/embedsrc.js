@@ -1,6 +1,7 @@
 (function(){
 	var res = [
-		{search: /^https?:\/\/vine\.co\/v\/(\w+)$/, replace: "https://vine.co/v/$1/embed/simple", type: "iframe"}
+		{search: /^https?:\/\/vine\.co\/v\/(\w+)$/, replace: "https://vine.co/v/$1/embed/simple", type: "iframe"},
+		{search: /^https?:\/\/vimeo\.com\/(\w+)$/, replace: "https://player.vimeo.com/video/$1", type: "iframe"}
 	];
 
 	var createAnchor = function(link, onclick) {
