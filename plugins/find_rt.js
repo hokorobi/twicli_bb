@@ -14,6 +14,7 @@
 					if (ele.nodeValue.match(/([\s\S]*)((?:>|＞|→)\s*RT)([\s\S]*)/)) {
 						ele.nodeValue = RegExp.$1;
 						var a = document.createElement('a');
+						a.className = "button";
 						a.href = "#";
 						a.onclick = function(){
 							var t = node.tw.retweeted_status || node.tw;
