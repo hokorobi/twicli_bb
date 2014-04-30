@@ -16,6 +16,7 @@
 						var a = document.createElement('a');
 						a.className = "button";
 						a.href = "#";
+						a.innerHTML = '<img src="images/jump.png" alt="☞" width="14" height="14">';
 						a.onclick = function(){
 							var t = node.tw.retweeted_status || node.tw;
 							var p = elem;
