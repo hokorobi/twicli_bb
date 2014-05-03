@@ -621,8 +621,6 @@ function press(e) {
 	last_post = st.value;
 	last_in_reply_to_user = in_reply_to_user;
 	last_in_reply_to_status_id = in_reply_to_status_id;
-	if (st.value.substr(0,1) == ".")
-		setReplyId(false); // "."で始まる時はin_reply_to指定無し
 	callPlugins("post", st.value);
 	st.value += footer;
 	st.select();
