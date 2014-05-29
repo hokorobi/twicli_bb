@@ -62,7 +62,7 @@ function setupOAuthURL(url, post) {
 	url = document.etc.URL.value;
 	if (post_agent) {
 		var sid = ['','2'][((new Date).getTime()/1000/60/60/12|0)%2];
-		url = url.replace(twitterAPI + 'statuses/update.json', (use_ssl?'https':'http')+'://tweet-agent'+sid+'.appspot.com/post');
+		url = url.replace(twitterAPI + 'statuses/update.json', 'https://tweet-agent'+sid+'.appspot.com/post');
 	}
 	for (var e = 0; e < nosign.length; e++)
 		document.request.appendChild(nosign[e]);
@@ -232,6 +232,7 @@ var scroll_duration;
 var scroll_timer = null;
 function getScrollY() { return window.pageYOffset || document.body.scrollTop || document.documentElement.scrollTop; }
 function scrollToY(y, total, start) {
+	var cont =  scroll_timer && !start;
 	if (scroll_timer) clearTimeout(scroll_timer);
 	scroll_timer = null;
 	var t = (new Date).getTime();
@@ -241,7 +242,7 @@ function scrollToY(y, total, start) {
 	if (start == t) scroll_duration = Math.min(500, Math.abs(total));
 	y += scroll_adjust;
 	scroll_adjust = 0;
-	if (start+scroll_duration <= t)
+	if (start+scroll_duration <= t || cont)
 		return scrollTo(0, y);
 	var pix = Math.ceil(total*(1-Math.cos((t-start)/scroll_duration*Math.PI))/2);
 	scrollTo(0, y-total+pix);
@@ -332,8 +333,8 @@ document.write('<style id="usercss">' + user_style + '</style>');
 
 // twicli用変数
 
-var twitterURL = 'http://twitter.com/';
-var twitterAPI = 'http://api.twitter.com/1.1/';
+var twitterURL = 'https://twitter.com/';
+var twitterAPI = 'https://api.twitter.com/1.1/';
 var myname = null;		// 自ユーザ名
 var myid = null;		// 自ユーザID
 var last_user = null;	// user TLに表示するユーザ名
@@ -373,11 +374,9 @@ var footer = readCookie('footer') || ""; 							// フッタ文字列
 var decr_enter = parseInt(readCookie('decr_enter') || "0");			// Shift/Ctrl+Enterで投稿
 var confirm_close = parseInt(readCookie('confirm_close') || "1");			// Tabを閉じるとき確認
 var no_geotag = parseInt(readCookie('no_geotag') || "0");			// GeoTaggingを無効化
-var use_ssl = parseInt(readCookie('use_ssl') || "1");				// SSLを使用
 var post_via_agent = parseInt(readCookie('post_via_agent') || "1");		// tweet-agent経由でツイート
 var show_header_img = parseInt(readCookie('show_header_img') || "1");	// ヘッダ画像表示
 var dnd_image_upload = parseInt(readCookie('dnd_image_upload') || (navigator.userAgent.indexOf('WebKit') >= 0 ? "1" : "0"));	// ドラッグ&ドロップで画像アップロード
-if (cookieVer<18) use_ssl = 1;
 // TL管理用
 var cur_page = 1;				// 現在表示中のページ
 var nr_page = 0;				// 次に取得するページ
@@ -454,8 +453,6 @@ if (location.search.match(/[?&]status=(.*?)(?:&|$)/)) {
 	}, 0);
 }
 
-var re_auth = false;
-var check_ssl = false;
 function twAuth(a) {
 	if (a.errors && a.errors[0]) {
 		alert(a.errors[0].message);
@@ -463,8 +460,7 @@ function twAuth(a) {
 			logout();
 		return;
 	}
-	if (!myname || !myid || myname != a.screen_name || re_auth) {
-		re_auth = false;
+	if (!myname || !myid || myname != a.screen_name) {
 		myname = last_user = a.screen_name;
 		last_user_info = a;
 		myid = a.id;
@@ -478,23 +474,11 @@ function twAuth(a) {
 	}
 	callPlugins('auth');
 }
-function twAuthFallbackSSL() {
-	if (check_ssl) return error("Authentication failed.");
-	check_ssl = true;
-	use_ssl = 1 - use_ssl;
-	error("Authentication failed... retrying "+(use_ssl?"with":"without")+" HTTPS...");
-	re_auth = true;
-	return auth();
-}
 function twAuthFallback() {
 	// verify_credentials API is unavailable?
-	xds.load(twitterAPI + "users/show.json?suppress_response_codes=true&screen_name="+myname, twAuth, twAuthFallbackSSL);
+	xds.load(twitterAPI + "users/show.json?suppress_response_codes=true&screen_name="+myname, twAuth, function(){error("Authentication failed.");});
 }
 function auth() {
-	if (use_ssl)
-		twitterAPI = twitterAPI.replace('http', 'https');
-	else
-		twitterAPI = twitterAPI.replace('https', 'http');
 	var name = readCookie('access_user');
 	if (!myname && name) {
 		name = name.split('|');
@@ -936,9 +920,10 @@ function resetUpdateTimer() {
 // 外部リンクを開く際のフック
 function link(a) { return true; }
 // tweetのHTML表現を生成
+var needGMT = isNaN(new Date("Wed Jan 01 00:00:00 +0000 2014").getDate());
 function d2(dig) { return (dig>9?"":"0") + dig }
 function dateFmt(d) {
-	d = new Date(typeof(d)=='string' && document.all ? d.replace('+','GMT+') : d);
+	d = new Date(typeof(d)=='string' && needGMT ? d.replace('+','GMT+') : d);
 	return (d.getMonth()+1) + "/" + d.getDate() + " " + d.getHours() + ":" + d2(d.getMinutes()) + ":" + d2(d.getSeconds());
 }
 function insertPDF(str) {
@@ -1690,7 +1675,6 @@ function switchMisc() {
 					'<input type="checkbox" name="decr_enter"' + (decr_enter?" checked":"") + '>'+_('Post with ctrl/shift+enter')+'<br>' +
 					'<input type="checkbox" name="confirm_close"' + (confirm_close?" checked":"") + '>'+_('Confirm before closing tabs')+'<br>' +
 					'<input type="checkbox" name="geotag"' + (no_geotag?"":" checked") + '>'+_('Enable GeoTagging')+'<br>' +
-					'<input type="checkbox" name="use_ssl"' + (use_ssl?" checked":"") + '>'+_('Use HTTPS')+'<br>' +
 					'<input type="checkbox" name="post_via_agent"' + (post_via_agent?" checked":"") + '>'+_('Tweet via GAE server')+'<br>' +
 					'<input type="checkbox" name="show_header_img"' + (show_header_img?" checked":"") + '>'+_('Show header image')+'<br>' +
 					(navigator.userAgent.indexOf('WebKit') >= 0 ? '<input type="checkbox" name="dnd_image_upload"' + (dnd_image_upload?" checked":"") + '>'+_('Drag&drop image upload')+'<br>' : '') +
@@ -1727,7 +1711,6 @@ function setPreps(frm) {
 	footer = new String(frm.footer.value);
 	decr_enter = frm.decr_enter.checked;
 	no_geotag = !frm.geotag.checked;
-	use_ssl = frm.use_ssl.checked?1:0;
 	post_via_agent = frm.post_via_agent.checked;
 	show_header_img = frm.show_header_img.checked;
 	dnd_image_upload = frm.dnd_image_upload && frm.dnd_image_upload.checked;
@@ -1755,7 +1738,6 @@ function setPreps(frm) {
 	writeCookie('decr_enter', decr_enter?1:0, 3652);
 	writeCookie('confirm_close', confirm_close?1:0, 3652);
 	writeCookie('no_geotag', no_geotag?1:0, 3652);
-	writeCookie('use_ssl', use_ssl?1:0, 3652);
 	writeCookie('post_via_agent', post_via_agent?1:0, 3652);
 	writeCookie('show_header_img', show_header_img?1:0, 3652);
 	writeCookie('dnd_image_upload', dnd_image_upload?1:0, 3652);
@@ -1763,10 +1745,6 @@ function setPreps(frm) {
 	writeCookie('user_style', new String(frm.user_style.value), 3652);
 	callPlugins('savePrefs', frm);
 	alert(_("Your settings are saved. Please reload to apply plugins."));
-	if (use_ssl)
-		twitterAPI = twitterAPI.replace('http', 'https');
-	else
-		twitterAPI = twitterAPI.replace('https', 'http');
 }
 // 画像ファイルの検証
 function checkMedia() {

@@ -20,13 +20,13 @@ function handle_stream_data(data, tw) {
 		if ($("direct").className.indexOf('new') < 0)
 		$("direct").className += " new";
 	} else if (data.event && (data.event == "favorite" || data.event == "unfavorite")) {
-		var name = data.source.name;
-		if (name == mname) return;
+		var name = data.source.screen_name;
+		if (name == myname) return;
 		var text = data.target_object.text;
 		if (text.length > 40) text = text.substr(0, 40) + "...";
 		var msg = _("@$1 "+data.event+"d your tweet:", name);
 		try {
-			notify(msg + "<br><small>" + text + "</small>");
+			notify(msg + "<br>" + text);
 		} catch(e) {
 			console.log(e);
 		}
@@ -35,6 +35,7 @@ function handle_stream_data(data, tw) {
 
 function ts_websocket_open() {
 	if (tw_stream_ws) tw_stream_ws.close();
+	console.log("ws opening ...")
 	var ws = new WebSocket('wss://twgateway-neocat.rhcloud.com:8443/');
 	ws.onopen = function() {
 		var orig = twitterAPI;
@@ -44,20 +45,30 @@ function ts_websocket_open() {
 		ws.send(userstream);
 		console.log("ws opened - " + userstream);
 		tw_stream_ws = ws;
-		ws.ping_timer = setInterval(function(){ ws.send('ping'); }, 5*60*1000);
+		ws.ping_timer = setInterval(function(){
+			ws.send('ping');
+			ws.pong_timer = setTimeout(function(){ ws.close(); }, 5000);
+		}, 5*60*1000);
 		if (ws_reopen_timer) clearTimeout(ws_reopen_timer);
 		ws_reopen_timer = null;
+		updateInterval = 600;
 	};
 	ws.onclose = function() {
 		console.log("ws closed");
 		console.log(ws_buffer);
-		var updateInterval = parseInt(readCookie('update_interval')) || 90;
+		updateInterval = parseInt(readCookie('update_interval')) || 90;
 		tw_stream_ws = null;
 		clearInterval(ws.ping_timer);
 		ws_reopen_timer = setTimeout(ts_websocket_open, updateInterval*1000);
 	};
 	ws.onmessage = function(e) {
-		if (e.data == 'Hello' || e.data == '##pong##') return;
+		if (e.data == 'Hello' || e.data == '##pong##') {
+			if (ws.pong_timer) {
+				clearTimeout(ws.pong_timer);
+				ws.pong_timer = null;
+			}
+			return;
+		}
 		ws_buffer += e.data;
 		if (ws_buffer.indexOf('\r') >= 0) {
 			ary = ws_buffer.split(/\r\n?/);
@@ -68,11 +79,11 @@ function ts_websocket_open() {
 				if (ary[i] == '' || ary[i] == '\n') continue;
 				try {
 					data = JSON.parse(ary[i]);
-					handle_stream_data(data, tw);
 				} catch(e) {
 					console.log('JSON parse error: ' + e);
 					console.log(">" + ary[i] + "<");
 				}
+				handle_stream_data(data, tw);
 			}
 			if (tw.length > 0) {
 				if (now - last_update > 180*1000) {
@@ -91,11 +102,11 @@ function ts_websocket_open() {
 
 registerPlugin({
 		auth: function() {
-			updateInterval = 600;
 			ts_websocket_open();
 		},
 		savePrefs: function() {
-			updateInterval = 600;
+			if (tw_stream_ws)
+				updateInterval = 600;
 		},
 		miscTab: function() {
 			$('preps').interval.value = parseInt(readCookie('update_interval')) || 90;
