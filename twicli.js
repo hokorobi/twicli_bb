@@ -605,8 +605,6 @@ function press(e) {
 	last_post = st.value;
 	last_in_reply_to_user = in_reply_to_user;
 	last_in_reply_to_status_id = in_reply_to_status_id;
-	if (st.value.substr(0,1) == ".")
-		setReplyId(false); // "."で始まる時はin_reply_to指定無し
 	callPlugins("post", st.value);
 	st.value += footer;
 	st.select();
@@ -926,7 +924,7 @@ var needGMT = isNaN(new Date("Wed Jan 01 00:00:00 +0000 2014").getDate());
 function d2(dig) { return (dig>9?"":"0") + dig }
 function dateFmt(d) {
 	d = new Date(typeof(d)=='string' && needGMT ? d.replace('+','GMT+') : d);
-	return (d.getMonth()+1) + "/" + d.getDate() + " " + d.getHours() + ":" + d2(d.getMinutes()) + ":" + d2(d.getSeconds());
+	return d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate() + " " + d.getHours() + ":" + d2(d.getMinutes()) + ":" + d2(d.getSeconds());
 }
 function insertPDF(str) {
 	var k = 0;
