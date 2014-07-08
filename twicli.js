@@ -921,9 +921,12 @@ function resetUpdateTimer() {
 function link(a) { return true; }
 // tweetのHTML表現を生成
 var needGMT = isNaN(new Date("Wed Jan 01 00:00:00 +0000 2014").getDate());
+function toDate(d) {
+	return new Date(typeof(d)=='string' && needGMT ? d.replace('+','GMT+') : d);
+}
 function d2(dig) { return (dig>9?"":"0") + dig }
 function dateFmt(d) {
-	d = new Date(typeof(d)=='string' && needGMT ? d.replace('+','GMT+') : d);
+	d = toDate(d);
 	return d.getFullYear() + "/" + (d.getMonth()+1) + "/" + d.getDate() + " " + d.getHours() + ":" + d2(d.getMinutes()) + ":" + d2(d.getSeconds());
 }
 function insertPDF(str) {
@@ -972,7 +975,7 @@ function makeHTML(tw, no_name, pid, userdesc) {
 		/*ダイレクトメッセージの方向*/ (t.d_dir == 1 ? '<span class="dir">→</span> ' : t.d_dir == 2 ? '<span class="dir">←</span> ' : '') +
 		//本文 (https〜をリンクに置換 + @を本家リンク+JavaScriptに置換)
 		" <span id=\"text-" + eid + "\" class=\"status\">" +
-		text.replace(/https?:\/\/[^\/\s]*[\w!#$%&\'()*+,.\/:;=?~-]*[\w#\/+-]|[@＠](\w+(?:\/[\w-]+)?)|([,.!?　、。！？「」]|\s|^)([#＃])([\w々ぁ-ゖァ-ヺーㄱ-ㆅ㐀-\u4DBF一-\u9FFF가-\uD7FF\uF900-\uFAFF０-９Ａ-Ｚａ-ｚｦ-ﾟ]+)(?=[^\w々ぁ-ゖァ-ヺーㄱ-ㆅ㐀-\u4DBF一-\u9FFF가-\uD7FF\uF900-\uFAFF０-９Ａ-Ｚａ-ｚｦ-ﾟ]|$)/g, function(_,u,x,h,s){
+		text.replace(/https?:\/\/[^\/\s]*[\w!#$%&\'()*+,.\/:;=?~-]*[\w#\/+-]|[@＠](\w+(?:\/[\w-]+)?)|([ -\/:-@\[-`{-~　、。！？「」（）『』｛｝［］【】]|\s|^)([#＃])([\w々ぁ-ゖァ-ヺーㄱ-ㆅ㐀-\u4DBF一-\u9FFF가-\uD7FF\uF900-\uFAFF０-９Ａ-Ｚａ-ｚｦ-ﾟ]+)(?=[^\w々ぁ-ゖァ-ヺーㄱ-ㆅ㐀-\u4DBF一-\u9FFF가-\uD7FF\uF900-\uFAFF０-９Ａ-Ｚａ-ｚｦ-ﾟ]|$)/g, function(_,u,x,h,s){
 				if (!u && !h) {
 					if (expanded_urls[_]) {
 						t.text_replaced = (t.text_replaced || t.text).replace(_, expanded_urls[_]);
@@ -1338,6 +1341,8 @@ function twShow2(tw) {
 	}
 	if (tw[0] && selected_menu.id == "user" && last_user.indexOf(',') < 0 && !fav_mode && user_info.innerHTML == '')
 		twUserInfo(tw[0].user);
+	if (tw[0] && selected_menu.id == "user" && last_user.indexOf('id=') == 0)
+		$("user").innerHTML = last_user = tw[0].user.screen_name;
 }
 function twShow3(tw) {
 	if (tw.errors) return error('', tw);
@@ -1603,8 +1608,9 @@ function switchUser(user) {
 		$("tw2h").innerHTML = (show_header_img ? "<div id=\"user_info_b\">" : "") + "<div id=\"user_info\"></div>" + (show_header_img ? "</div>" : "");
 		if (last_user_info && last_user_info.screen_name == user)
 			twUserInfo(last_user_info);
+		var query = user.indexOf('id=') == 0 ? 'user_id=' + user.substr(3) : 'screen_name=' + user;
 		xds.load_for_tab(twitterAPI + 'statuses/user_timeline.json' +
-			'?count=' + max_count_u + '&screen_name=' + user + 
+			'?count=' + max_count_u + '&' + query +
 			'&include_rts=true&include_entities=true&suppress_response_codes=true', twShow2);
 	} else {
 		users_log = [];
