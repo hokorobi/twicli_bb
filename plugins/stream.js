@@ -6,6 +6,10 @@ var ws_buffer = '';
 var tw_stream_ws = null;
 var ws_reopen_timer = null;
 
+function debug(msg) {
+	console.log(new Date() + ": " + msg);
+}
+
 function handle_stream_data(data, tw) {
 	if (data.text) {
 		tw.push(data);
@@ -28,47 +32,50 @@ function handle_stream_data(data, tw) {
 		try {
 			notify(msg + "<br>" + text);
 		} catch(e) {
-			console.log(e);
+			debug(e);
 		}
-	} else console.log(data);
+	} else debug(data);
 }
 
 function ts_websocket_open() {
 	if (tw_stream_ws) tw_stream_ws.close();
-	console.log("ws opening ...")
+	debug("ws opening ...")
 	var ws = new WebSocket('wss://twgateway-neocat.rhcloud.com:8443/');
+	ws.send_ping = function() {
+		if (ws.readyState == ws.CLOSING || ws.readyState == ws.CLOSED)
+		return ws.onerror("closed");
+		ws.send('ping');
+		ws.pong_timer = setTimeout(function(){ debug("ping timeout"); ws.close(); }, 10000);
+	};
 	ws.onopen = function() {
 		var orig = twitterAPI;
 		twitterAPI = 'https://userstream.twitter.com/1.1/';
 		userstream = setupOAuthURL(twitterAPI+'user.json');
 		twitterAPI = orig;
 		ws.send(userstream);
-		console.log("ws opened - " + userstream);
+		debug("ws opened - " + userstream);
 		tw_stream_ws = ws;
-		ws.ping_timer = setInterval(function(){
-			if (ws.readyState == ws.CLOSING || ws.readyState == ws.CLOSED)
-				return ws.onerror("closed");
-			ws.send('ping');
-			ws.pong_timer = setTimeout(function(){ ws.close(); }, 5000);
-		}, 5*60*1000);
+		ws.ping_timer = setInterval(ws.send_ping, 5*60*1000);
 		if (ws_reopen_timer) clearTimeout(ws_reopen_timer);
 		ws_reopen_timer = null;
 		updateInterval = 600;
 	};
 	ws.onerror = function(e) {
-		console.log("ws error: " + e);
+		debug("ws error: " + e);
 		if (ws.readyState == ws.CLOSING || ws.readyState == ws.CLOSED)
 			ws.onclose();
 		else
 			ws.close();
 	}
 	ws.onclose = function() {
-		console.log("ws closed");
-		console.log(ws_buffer);
+		debug("ws closed");
+		debug(ws_buffer);
 		updateInterval = parseInt(readCookie('update_interval')) || 90;
-		tw_stream_ws = null;
 		clearInterval(ws.ping_timer);
-		ws_reopen_timer = setTimeout(ts_websocket_open, updateInterval*1000);
+		if (tw_stream_ws == this) {
+			tw_stream_ws = null;
+			ws_reopen_timer = setTimeout(ts_websocket_open, updateInterval*1000);
+		}
 		update();
 	};
 	ws.onmessage = function(e) {
@@ -90,8 +97,8 @@ function ts_websocket_open() {
 				try {
 					data = JSON.parse(ary[i]);
 				} catch(e) {
-					console.log('JSON parse error: ' + e);
-					console.log(">" + ary[i] + "<");
+					debug('JSON parse error: ' + e);
+					debug(">" + ary[i] + "<");
 				}
 				handle_stream_data(data, tw);
 			}
