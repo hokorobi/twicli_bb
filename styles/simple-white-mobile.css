@@ -23,8 +23,7 @@ a:hover { text-decoration: underline; }
 
 #fst /* input textarea */ { margin: 0 0 -1px; height: 33px; }
 #tw > div { border: none; }
-#tw > div > div, #re > div > div, #tw2c > div > div {
- padding: 4px 20px 2px 4px; border-bottom: 1px solid #ccc; }
+#tw > div > div, #re > div > div, #tw2c > div > div { padding: 4px 20px 2px 4px; border-bottom: 1px solid #ccc; }
 .uicon { margin: 0; }
 .uid { display: block; width: 32px; height: 32px; float: left; margin: 0 6px 0 -32px; text-indent: -999px; position: relative; z-index: 1; text-decoration: none; }
 .uname { display: none; }
@@ -52,7 +51,9 @@ img.fav /* fav button */ { display: none; }
 .get-next /* get next page */ { color: #fff; line-height: 2; border-bottom: none !important; }
 
 #control { border-color: #92928e; }
-#menu a { background: #deded8; color: #888; border-color: #90908e; font-weight: bold; }
+
+/* tab */
+#menu a { background: #deded8; color: #888; border-color: #90908e; }
 #menu a.sel { background: #f4f4f2; color: #222; border-bottom-color: #fff; }
 #menu a.new { background: #fcfcd0; }
 
