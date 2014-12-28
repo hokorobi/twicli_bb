@@ -8,6 +8,7 @@ body, #fst, #menu a { font-family: "ヒラギノ角ゴProN", "メイリオ", san
 .prop, .utils .button, #rep a.close { font-size: 10px; }
 body, td, #counter, #menu, #user_info td, #rep, #popup, #pref textarea, .status { font-size: 12px; }
 #tw, #re, #tw2, #fst { font-size: 11px; }
+#rep a.close { font-size: 24px; }
 #popup { font-size: 18px; }
 .status, .prop, #tw2h, #tw2h table, #fst { line-height: 1.5; }
 body, table { line-height: 1; }
@@ -67,10 +68,10 @@ img.fav /* fav button */ { display: none; }
 /* reply popup */
 #rep { left: 20px; right: 6px; z-index: 3; width: auto; padding: 4px; }
 #rep a.close { display: block; float: left; overflow: hidden;
- margin: 0 4px 4px 0; padding: 0; line-height: 13px;
- width: 13px; height: 13px; text-align: center;
+ margin: 8px 4px 16px 20px; padding: 0; line-height: 25px;
+ width: 25px; height: 25px; text-align: center;
  background: #deded8; color: #666; border: solid 1px #ccc;
- -moz-border-radius: 13px; border-radius: 13px }
+ -moz-border-radius: 25px; border-radius: 25px }
 #rep a.close:before { content: "\21d4"; display: block; }
 #rep a.close:first-child:before { content: "\00d7"; }
 #reps { clear: left; }
