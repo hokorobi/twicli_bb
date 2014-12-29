@@ -47,14 +47,14 @@ img.fav /* fav button */ { display: none; }
 #go { display: none; }
 #rst /* tweet reset button */ { float: left; margin: 2px 0 4px 0; top: initial; left: initial; right: 2px; }
 #rst:before { content: '\00d7'; display: block; }
+#control /* textarea + tab */ { border-color: #92928e; }
+#menu2 a /* tab */ { min-width: 2em; text-align: center; }
 #tw > div > div:hover .utils .button,
 #re > div > div:hover .utils .button,
 #tw2 > div > div > div:hover .utils .button,
 #rep .utils .button,
 .inrep .utils .button.reply { visibility: visible; }
 .get-next /* get next page */ { color: #fff; line-height: 2; border-bottom: none !important; }
-
-#control { border-color: #92928e; }
 
 /* tab */
 #menu a { background: #deded8; color: #888; border-color: #90908e; margin-right: 6px; }
