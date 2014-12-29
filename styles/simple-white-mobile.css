@@ -22,6 +22,12 @@ a { color: #088253; text-decoration: none; }
 a:hover { text-decoration: underline; }
 .selected { background-color: #cef !important; }
 
+/* button style */
+#go, .utils .button, #rep a.close { display: block; float: left; overflow: hidden;
+ padding: 0; line-height: 25px; width: 25px; height: 25px; text-align: center;
+ background: #deded8; color: #666; border: solid 1px #ccc;
+ -moz-border-radius: 25px; border-radius: 25px; }
+
 #fst /* input textarea */ { margin: 0 0 -1px; height: 33px; }
 #tw > div { border: none; }
 #tw > div > div, #re > div > div, #tw2c > div > div { padding: 4px 20px 2px 4px; border-bottom: 1px solid #ccc; }
@@ -33,17 +39,14 @@ a:hover { text-decoration: underline; }
 #rep .fav, #rep .utils { margin-right: 0; }
 .utils span { vertical-align: bottom; }
 .utils .prop { display: block; float: none; text-align: left; margin: 3px 6px -18px 0; position: relative; top: 2px; }
-.utils .button { display: block; float: right; margin: 2px 0 2px 16px; padding: 0; line-height: 13px;
- width: 13px; height: 13px; text-align: center;
- background: #deded8; color: #666; border: solid 1px #ccc;
- -moz-border-radius: 13px; border-radius: 13px;
- visibility: hidden; }
+.utils .button { float: right; margin: 2px 0 2px 16px; visibility: hidden; }
 .utils .button:hover { text-decoration: none; }
-.utils .button img { position: relative; left: -1px; top: -2px; }
+.utils .button img { position: relative; margin-top: 4px; }
 .utils .button:last-child /* popup menu */ { position: relative; }
 img.fav /* fav button */ { display: none; }
 #rst /* tweet reset button */ { display: none; }
-#go /* tweet button */ { margin-top: 6px; }
+#go { float: left; margin: 2px 0 4px 0; }
+#go:before { content: '\279c'; } 
 #tw > div > div:hover .utils .button,
 #re > div > div:hover .utils .button,
 #tw2 > div > div > div:hover .utils .button,
@@ -67,11 +70,7 @@ img.fav /* fav button */ { display: none; }
 
 /* reply popup */
 #rep { left: 20px; right: 6px; z-index: 3; width: auto; padding: 4px; }
-#rep a.close { display: block; float: left; overflow: hidden;
- margin: 8px 4px 16px 20px; padding: 0; line-height: 25px;
- width: 25px; height: 25px; text-align: center;
- background: #deded8; color: #666; border: solid 1px #ccc;
- -moz-border-radius: 25px; border-radius: 25px }
+#rep a.close /* button */ { float: left; margin: 8px 4px 16px 20px; }
 #rep a.close:before { content: "\21d4"; display: block; }
 #rep a.close:first-child:before { content: "\00d7"; }
 #reps { clear: left; }
