@@ -143,6 +143,15 @@ registerPlugin({
 					if (img && img.medium)
 						addThumbnail(elem, img.medium, url);
 				});
+        }
+		else if (url.match(/^http:\/\/miil\.me\/p\//)) {
+			addThumbnail(elem, url + '.jpeg?size=240', url);
+		}
+		else if (url.match(/^http:\/\/gifzo\.net/)) {
+			addThumbnail(elem, url + '.gif' , url);
+		}
+		else if (url.match(/(\.png|\.jpg|\.jpeg|\.gif)$/)) {
+			addThumbnail(elem, url, url);
 		}
 	}
 });
