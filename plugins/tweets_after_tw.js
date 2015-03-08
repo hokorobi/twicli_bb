@@ -1,4 +1,4 @@
-langResources['Find tweets after tweet'] =	['ツイート直後のツイートを探す',''];
+langResources['Find tweets between before and after tweet'] =	['ツイート前後のツイートを探す',''];
 
 var tweets_after_tw = {
 	popup: function(ele, user, id) {
@@ -16,17 +16,18 @@ var tweets_after_tw = {
 					var twid = tw.id_str;
 					// 10分後までのtweetを取得 (snowflake ID (63bit)の上位41bit分が時刻(ms))
 					var max_id = tw.id + 600000 * (1 << 22);
+					var min_id = tw.id - 600000 * (1 << 22);
 					xds.load_for_tab(twitterAPI + 'statuses/user_timeline.json?' +
-						'user_id=' + tw.user.id_str + '&max_id=' + max_id + '&since_id=' + twid,
+						'user_id=' + tw.user.id_str + '&max_id=' + max_id + '&since_id=' + min_id,
 						function(tws) {
 							if (tws.errors) return error('', tws);
 							for (var i=0; i < tws.length; i++) {
 								var t = tws[tws.length-1-i];
 								if (cnt > 0)
 									rep_trace_id = t.id_str;
+								// TODO: 元になったツイートを選択状態にしたい
 								dispReply2(t);
 								cnt++;
-								
 							}
 						});
 			});
@@ -52,6 +53,6 @@ $('popup').appendChild(a)
 
 a = document.createElement("a");
 a.id = 'tweets_after_tweet';
-a.innerHTML = _('Find tweets after tweet');
+a.innerHTML = _('Find tweets between before and after tweet');
 a.href = "#";
 $('popup').appendChild(a)
