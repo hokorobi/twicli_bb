@@ -22,7 +22,7 @@ var tweets_after_tw = {
 						function(tws) {
 							if (tws.errors) return error('', tws);
 							for (var i=0; i < tws.length; i++) {
-								var t = tws[tws.length-1-i];
+								var t = tws[i];
 								if (cnt > 0)
 									rep_trace_id = t.id_str;
 								// TODO: 元になったツイートを選択状態にしたい
