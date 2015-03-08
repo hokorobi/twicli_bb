@@ -1,13 +1,13 @@
 langResources['Find tweets between before and after tweet'] =	['ツイート前後のツイートを探す',''];
 
-var tweets_after_tw = {
+var tweets_around_tw = {
 	popup: function(ele, user, id) {
-		$('tweets_after_tweet').onclick = function() {
-			tweets_after_tw.find_tweets_after_tweet(ele, user, id);
+		$('tweets_around_tweet').onclick = function() {
+			tweets_around_tw.find_tweets_around_tweet(ele, user, id);
 			return false;
 		}
 	},
-	find_tweets_after_tweet: function(ele, user, id) {
+	find_tweets_around_tweet: function(ele, user, id) {
 		rep_top = cumulativeOffset(ele)[1] + 20;
 		xds.load_for_tab(twitterAPI + 'statuses/show.json?id=' + id,
 			function(tw) {
@@ -33,7 +33,7 @@ var tweets_after_tw = {
 			});
 	}
 };
-registerPlugin(tweets_after_tw);
+registerPlugin(tweets_around_tw);
 
 function favEntries(favs) {
 	twFavPlugin.favs = favs;
@@ -52,7 +52,7 @@ var a = document.createElement("hr");
 $('popup').appendChild(a)
 
 a = document.createElement("a");
-a.id = 'tweets_after_tweet';
+a.id = 'tweets_around_tweet';
 a.innerHTML = _('Find tweets between before and after tweet');
 a.href = "#";
 $('popup').appendChild(a)
