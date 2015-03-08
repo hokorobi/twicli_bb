@@ -35,17 +35,6 @@ var tweets_around_tw = {
 };
 registerPlugin(tweets_around_tw);
 
-function favEntries(favs) {
-	twFavPlugin.favs = favs;
-	for (var x in favs) {
-		for (var i = 0; i < 3; i++) {
-			var target = $('nrFav-'+['tw-','re-','tw2c-'][i]+x);
-			if (target)
-				target.innerHTML = '[fav:' + favs[x] + ']';
-		}
-	}
-}
-
 // Popup menu
 
 var a = document.createElement("hr");
