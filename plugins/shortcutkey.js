@@ -97,27 +97,19 @@ var shortcutkey_plugin = {
 				else
 					shortcutkey_plugin.deselectTweet();
 				return false;
-			case 49: // 1 : TLタブ
+			case 51: // 3 : TLタブ
 				switchTL();
 				return false;
-			case 50: // 2 : @タブ
+			case 52: // 4 : @タブ
 				switchReply();
 				return false;
-			case 51: // 3 : ユーザタブ
-				switchUser();
-				return false;
-			case 52: // 4 : Dタブ
-				switchDirect();
-				return false;
-			case 53: // 5 : +タブ
-				switchMisc();
-				return false;
-			case 54: // 6 : タブ6
-			case 55: // 7 : タブ7
-			case 56: // 8 : タブ8
-			case 57: // 9 : タブ9
-			case 48: // 0 : タブ10
-				var num = code == 48 ? 9 : code - 49;
+			case 53: // 5 : タブ6
+			case 54: // 6 : タブ7
+			case 55: // 7 : タブ8
+			case 56: // 8 : タブ9
+			case 57: // 9 : タブ10
+			case 48: // 0 : タブ11
+				var num = code == 48 ? 10 : code - 48;
 				var menu = $('menu2').childNodes[num];
 				if (!menu || !menu.onclick) return true;
 				try {
@@ -226,7 +218,7 @@ var shortcutkey_plugin = {
 				if (geomap.onclick())
 					window.open(geomap.href, '_blank');
 				return false;
-			case 79+lower: // o : リンクを開く(Open links)
+			case 86+lower: // v : リンクを必ず別ウィンドウで開く(Open links)
 				if (!selected) return true;
 				for (var i = 0; i < selected.childNodes.length; i++) {
 					var target = selected.childNodes[i]
@@ -234,23 +226,42 @@ var shortcutkey_plugin = {
 						for (i = 0; i < target.childNodes.length; i++) {
 							var target2 = target.childNodes[i];
 							if (target2.tagName == 'A' && target2.innerHTML.substr(0,4) == 'http') {
-								if (link(target2)) window.open(target2.href, "_blank");
+								if (link(target2)) (function(url){
+									var a = document.createElement("a");
+									a.href = url;
+									var evt = document.createEvent("MouseEvents");
+									evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
+									a.dispatchEvent(evt);
+									return true;
+								})(target2.href);
 							}
 						}
 						break;
 					}
 				}
 				return false;
-			case 86+lower: // v : 写真等のリンク先内容を表示(View links)
+			case 79+lower: // o : リンクを開く(Open links)
 				if (!selected) return true;
 				for (var i = 0; i < selected.childNodes.length; i++) {
 					var target = selected.childNodes[i]
 					if (target.id && target.id.substr(0,5) == 'text-') {
-						for (i = 0; i < target.childNodes.length; i++) {
+						for (i = target.childNodes.length - 1; i >= 0; i--) {
 							var target2 = target.childNodes[i];
-							if (target2.tagName == 'A' && target2.className == 'button' && target2.onclick) {
-								target2.onclick();
-								break;
+							if (target2.tagName == 'A') {
+								if (target2.className == 'button' && target2.onclick) {
+									target2.onclick();
+									break;
+								}
+								if (target2.innerHTML.substr(0,4) == 'http') {
+									if (link(target2)) (function(url){
+										var a = document.createElement("a");
+										a.href = url;
+										var evt = document.createEvent("MouseEvents");
+										evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
+										a.dispatchEvent(evt);
+										return true;
+									})(target2.href);
+								}
 							}
 						}
 						break;
