@@ -11,16 +11,16 @@ var tweets_around_tw = {
 		rep_top = cumulativeOffset(ele)[1] + 20;
 		xds.load_for_tab(twitterAPI + 'statuses/show.json?id=' + id,
 			function(tw) {
-				var cnt = 0;
 				if (tw.errors) return error('', tw);
 					var twid = tw.id_str;
-					// 10分後までのtweetを取得 (snowflake ID (63bit)の上位41bit分が時刻(ms))
+					// 10分前後までのtweetを取得 (snowflake ID (63bit)の上位41bit分が時刻(ms))
 					var max_id = tw.id + 600000 * (1 << 22);
 					var min_id = tw.id - 600000 * (1 << 22);
 					xds.load_for_tab(twitterAPI + 'statuses/user_timeline.json?' +
 						'user_id=' + tw.user.id_str + '&max_id=' + max_id + '&since_id=' + min_id,
 						function(tws) {
 							if (tws.errors) return error('', tws);
+							var cnt = 0;
 							for (var i=0; i < tws.length; i++) {
 								var t = tws[i];
 								if (cnt > 0)
