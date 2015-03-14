@@ -256,8 +256,7 @@ var shortcutkey_plugin = {
 									if (link(target2)) (function(url){
 										var a = document.createElement("a");
 										a.href = url;
-										var evt = document.createEvent("MouseEvents");
-										evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
+                                        var evt = new MouseEvent("click", {"ctrlKey": true});
 										a.dispatchEvent(evt);
 										return true;
 									})(target2.href);
