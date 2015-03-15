@@ -121,9 +121,9 @@ label, button, input[type="submit"], input[type="button"], input[type="image"], 
 .thumbnail-image:hover { border: solid 2px white; width: auto; max-width: 200px; }
 .thumbnail-link { border: solid 1px grey; display: block; float: right; }
 
-.filter-form { position: fixed; left: 0; right: 0px; margin: 4px; padding: 10px; top: 0; z-index: 100; border: solid 1px grey; background-color: #ffe; box-shadow: 0 3px 5px grey; font-size: small; text-align: center; }
-.filter-form a { color: red;}
-.filter-form input { width: 75%; }
+#filter-form { position: fixed; left: 0; right: 0px; margin: 4px; padding: 10px; top: 0; z-index: 100; border: solid 1px grey; background-color: #ffe; box-shadow: 0 3px 5px grey; font-size: small; text-align: center; }
+#filter-form a { color: red;}
+#filter-form input { width: 75%; }
 
 @media screen and (max-device-width: 480px) {
 	#menu a { padding: 1px 5px; height: 22px; line-height: 22px; }

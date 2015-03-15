@@ -267,7 +267,7 @@ var shortcutkey_plugin = {
 			case 191: // / : インクリメンタルサーチ
 				shortcutkey_plugin.resetInclementalSearch();
 				var filter_div = document.createElement('div');
-				filter_div.className = 'filter-form';
+				filter_div.id = 'filter-form';
 				filter_div.innerHTML = '<a href="javascript:void(shortcutkey_plugin.resetInclementalSearch())">[x]</a> Filter: <input type="text" id="filter-field">';
 				document.body.appendChild(filter_div);
 				shortcutkey_plugin.filter_div = filter_div;
