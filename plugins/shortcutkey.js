@@ -205,8 +205,8 @@ var shortcutkey_plugin = {
 				return false;
 			case 67+lower: // c : ツイートのURLをツイート欄へコピー
 				if(!selected) return true;
-				var tweet = document.frm.status.value;
-				document.frm.status.value = tweet + ' ' + twitterURL + tw.screen_name + '/statuses/' + tw.id_str;
+				document.frm.status.value += ' ' + twitterURL + tw.screen_name + '/statuses/' + tw.id_str;
+				document.frm.status.select();
 				return false;
 			case 87+lower: // w : ユーザのwebサイトを開く
 				if(!selected || !tw.user.url) return true;
