@@ -203,6 +203,11 @@ var shortcutkey_plugin = {
 				if(!selected) return true;
 				window.open(twitterURL + tw.screen_name + '/statuses/' + tw.id_str);
 				return false;
+			case 67+lower: // c : ツイートのURLをツイート欄へコピー
+				if(!selected) return true;
+				var tweet = document.frm.status.value;
+				document.frm.status.value = tweet + ' ' + twitterURL + tw.screen_name + '/statuses/' + tw.id_str;
+				return false;
 			case 87+lower: // w : ユーザのwebサイトを開く
 				if(!selected || !tw.user.url) return true;
 				window.open(tw.user.url);
@@ -270,7 +275,7 @@ var shortcutkey_plugin = {
 									if (link(target2)) (function(url){
 										var a = document.createElement("a");
 										a.href = url;
-                                        var evt = new MouseEvent("click", {"ctrlKey": true});
+										var evt = new MouseEvent("click", {"ctrlKey": true});
 										a.dispatchEvent(evt);
 										return true;
 									})(target2.href);
