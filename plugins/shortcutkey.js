@@ -41,8 +41,8 @@ var shortcutkey_plugin = {
 		var code = ev.keyCode || ev.charCode;
 		//$("fst").value = code;
 		if (document.activeElement.tagName == 'INPUT' || document.activeElement.tagName == 'TEXTAREA') {
-			// inputフォーカス時はesc以外をパススルー
-			if (code == 27) { // esc
+			// inputフォーカス時はesc,Tab以外をパススルー
+			if (code == 27 || code == 9) { // esc or Tab
 				document.activeElement.blur();
 				return false;
 			}
@@ -199,6 +199,14 @@ var shortcutkey_plugin = {
 				if (!selected) return true;
 				retweetStatus(id, selected);
 				return false;
+			case 84+lower: // t : ツイートをwebで開く
+				if(!selected) return true;
+				window.open(twitterURL + tw.screen_name + '/statuses/' + tw.id_str);
+				return false;
+			case 87+lower: // w : ユーザのwebサイトを開く
+				if(!selected || !tw.user.url) return true;
+				window.open(tw.user.url);
+				return false;
 			case 81+lower: // q : RT:を付けて引用(Quote with RT:)
 				if (!selected) return true;
 				quoteStatus(id, user, selected);
@@ -208,15 +216,21 @@ var shortcutkey_plugin = {
 				if (selected_menu.id != "direct" && user != myname) return true;
 				deleteStatus(id);
 				return false;
-			case 84+lower: // t : 翻訳(Translate)
+			case 71+lower: // g : ハッシュタグを検索(hashtaG)
 				if (!selected) return true;
-				translateStatus(selected.id);
-				return false;
-			case 71+lower: // g : 地図表示(Geo map)
-				if (!selected) return true;
-				var geomap = $('geomap-'+selected.id);
-				if (geomap.onclick())
-					window.open(geomap.href, '_blank');
+				for (var i = 0; i < selected.childNodes.length; i++) {
+					var target = selected.childNodes[i]
+					if (target.id && target.id.substr(0,5) == 'text-') {
+						for (i = 0; i < target.childNodes.length; i++) {
+							var target2 = target.childNodes[i];
+							if (target2.tagName == 'A' && target2.className.indexOf('hashtag') > -1) {
+								target2.onclick();
+								break;
+							}
+						}
+						break;
+					}
+				}
 				return false;
 			case 86+lower: // v : リンクを必ず別ウィンドウで開く(Open links)
 				if (!selected) return true;
@@ -267,8 +281,15 @@ var shortcutkey_plugin = {
 					}
 				}
 				return false;
-			case 77+lower: // m : 発言欄へ移動(Move to textarea)
-				$('fst').focus();
+			case 9: // Tab : 発言欄とツイート欄を移動
+				(document.activeElement.id == 'fst') ? $('fst').blur() : $('fst').focus();
+				return false;
+			case 78+lower: // n : 最上部のツイートに移動
+				ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
+						 $('tw2c')).childNodes[0];
+				ele = ele && ele.childNodes[0];
+				if (ele && ele.tw)
+					shortcutkey_plugin.selectTweet(ev, ele);
 				return false;
 			case 88+lower: // x : タブを閉じる
 				var closetab = $('tws-closetab') || $('regexp-closetab');
