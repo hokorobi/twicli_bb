@@ -3,6 +3,7 @@
 		{search: /^https?:\/\/(?:\w+\.)?pinterest\.com\/pin\/\d+/,
 			replace: "$&/", type: "pin"},
 		{search: /^https?:\/\/vine\.co\/v\/(\w+)$/, replace: "https://vine.co/v/$1/embed/simple", type: "iframe"},
+		{search: /^https?:\/\/amp\.twimg\.com\/v\/([\w-]+)$/, replace: "https://amp.twimg.com/v/$1", type: "iframe"},
 		{search: /^https?:\/\/vimeo\.com\/(?:m\/)?(\d+)$/, replace: "https://player.vimeo.com/video/$1", type: "iframe"}
 	];
 
