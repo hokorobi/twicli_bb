@@ -55,6 +55,7 @@ img.fav /* fav button */ { display: none; }
 #rep .utils .button,
 .inrep .utils .button.reply { visibility: visible; }
 .get-next /* get next page */ { color: #fff; line-height: 2; border-bottom: none !important; }
+.source {pointer-events:none;}
 
 /* tab */
 #menu a { background: #deded8; color: #888; border-color: #90908e; margin-right: 6px; }
