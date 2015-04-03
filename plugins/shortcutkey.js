@@ -41,8 +41,8 @@ var shortcutkey_plugin = {
 		var code = ev.keyCode || ev.charCode;
 		//$("fst").value = code;
 		if (document.activeElement.tagName == 'INPUT' || document.activeElement.tagName == 'TEXTAREA') {
-			// inputフォーカス時はesc以外をパススルー
-			if (code == 27) { // esc
+			// inputフォーカス時はesc,Tab以外をパススルー
+			if (code == 27 || code == 9) { // esc or Tab
 				document.activeElement.blur();
 				return false;
 			}
@@ -97,27 +97,19 @@ var shortcutkey_plugin = {
 				else
 					shortcutkey_plugin.deselectTweet();
 				return false;
-			case 49: // 1 : TLタブ
+			case 51: // 3 : TLタブ
 				switchTL();
 				return false;
-			case 50: // 2 : @タブ
+			case 52: // 4 : @タブ
 				switchReply();
 				return false;
-			case 51: // 3 : ユーザタブ
-				switchUser();
-				return false;
-			case 52: // 4 : Dタブ
-				switchDirect();
-				return false;
-			case 53: // 5 : +タブ
-				switchMisc();
-				return false;
-			case 54: // 6 : タブ6
-			case 55: // 7 : タブ7
-			case 56: // 8 : タブ8
-			case 57: // 9 : タブ9
-			case 48: // 0 : タブ10
-				var num = code == 48 ? 9 : code - 49;
+			case 53: // 5 : タブ6
+			case 54: // 6 : タブ7
+			case 55: // 7 : タブ8
+			case 56: // 8 : タブ9
+			case 57: // 9 : タブ10
+			case 48: // 0 : タブ11
+				var num = code == 48 ? 10 : code - 48;
 				var menu = $('menu2').childNodes[num];
 				if (!menu || !menu.onclick) return true;
 				try {
@@ -207,6 +199,19 @@ var shortcutkey_plugin = {
 				if (!selected) return true;
 				retweetStatus(id, selected);
 				return false;
+			case 84+lower: // t : ツイートをwebで開く
+				if(!selected) return true;
+				window.open(twitterURL + tw.screen_name + '/statuses/' + tw.id_str);
+				return false;
+			case 67+lower: // c : ツイートのURLをツイート欄へコピー
+				if(!selected) return true;
+				document.frm.status.value += ' ' + twitterURL + tw.screen_name + '/statuses/' + tw.id_str;
+				document.frm.status.select();
+				return false;
+			case 87+lower: // w : ユーザのwebサイトを開く
+				if(!selected || !tw.user.url) return true;
+				window.open(tw.user.url);
+				return false;
 			case 81+lower: // q : RT:を付けて引用(Quote with RT:)
 				if (!selected) return true;
 				quoteStatus(id, user, selected);
@@ -216,39 +221,14 @@ var shortcutkey_plugin = {
 				if (selected_menu.id != "direct" && user != myname) return true;
 				deleteStatus(id);
 				return false;
-			case 84+lower: // t : 翻訳(Translate)
-				if (!selected) return true;
-				translateStatus(selected.id);
-				return false;
-			case 71+lower: // g : 地図表示(Geo map)
-				if (!selected) return true;
-				var geomap = $('geomap-'+selected.id);
-				if (geomap.onclick())
-					window.open(geomap.href, '_blank');
-				return false;
-			case 79+lower: // o : リンクを開く(Open links)
+			case 71+lower: // g : ハッシュタグを検索(hashtaG)
 				if (!selected) return true;
 				for (var i = 0; i < selected.childNodes.length; i++) {
 					var target = selected.childNodes[i]
 					if (target.id && target.id.substr(0,5) == 'text-') {
 						for (i = 0; i < target.childNodes.length; i++) {
 							var target2 = target.childNodes[i];
-							if (target2.tagName == 'A' && target2.innerHTML.substr(0,4) == 'http') {
-								if (link(target2)) window.open(target2.href, "_blank");
-							}
-						}
-						break;
-					}
-				}
-				return false;
-			case 86+lower: // v : 写真等のリンク先内容を表示(View links)
-				if (!selected) return true;
-				for (var i = 0; i < selected.childNodes.length; i++) {
-					var target = selected.childNodes[i]
-					if (target.id && target.id.substr(0,5) == 'text-') {
-						for (i = 0; i < target.childNodes.length; i++) {
-							var target2 = target.childNodes[i];
-							if (target2.tagName == 'A' && target2.className == 'button' && target2.onclick) {
+							if (target2.tagName == 'A' && target2.className.indexOf('hashtag') > -1) {
 								target2.onclick();
 								break;
 							}
@@ -257,8 +237,64 @@ var shortcutkey_plugin = {
 					}
 				}
 				return false;
-			case 77+lower: // m : 発言欄へ移動(Move to textarea)
-				$('fst').focus();
+			case 86+lower: // v : リンクを必ず別ウィンドウで開く(Open links)
+				if (!selected) return true;
+				for (var i = 0; i < selected.childNodes.length; i++) {
+					var target = selected.childNodes[i]
+					if (target.id && target.id.substr(0,5) == 'text-') {
+						for (i = 0; i < target.childNodes.length; i++) {
+							var target2 = target.childNodes[i];
+							if (target2.tagName == 'A' && target2.innerHTML.substr(0,4) == 'http') {
+								if (link(target2)) (function(url){
+									var a = document.createElement("a");
+									a.href = url;
+									var evt = document.createEvent("MouseEvents");
+									evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
+									a.dispatchEvent(evt);
+									return true;
+								})(target2.href);
+							}
+						}
+						break;
+					}
+				}
+				return false;
+			case 79+lower: // o : リンクを開く(Open links)
+				if (!selected) return true;
+				for (var i = 0; i < selected.childNodes.length; i++) {
+					var target = selected.childNodes[i]
+					if (target.id && target.id.substr(0,5) == 'text-') {
+						for (i = target.childNodes.length - 1; i >= 0; i--) {
+							var target2 = target.childNodes[i];
+							if (target2.tagName == 'A') {
+								if (target2.className == 'button' && target2.onclick) {
+									target2.onclick();
+									break;
+								}
+								if (target2.innerHTML.substr(0,4) == 'http') {
+									if (link(target2)) (function(url){
+										var a = document.createElement("a");
+										a.href = url;
+										var evt = new MouseEvent("click", {"ctrlKey": true});
+										a.dispatchEvent(evt);
+										return true;
+									})(target2.href);
+								}
+							}
+						}
+						break;
+					}
+				}
+				return false;
+			case 9: // Tab : 発言欄とツイート欄を移動
+				(document.activeElement.id == 'fst') ? $('fst').blur() : $('fst').focus();
+				return false;
+			case 78+lower: // n : 最上部のツイートに移動
+				ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
+						 $('tw2c')).childNodes[0];
+				ele = ele && ele.childNodes[0];
+				if (ele && ele.tw)
+					shortcutkey_plugin.selectTweet(ev, ele);
 				return false;
 			case 88+lower: // x : タブを閉じる
 				var closetab = $('tws-closetab') || $('regexp-closetab');
