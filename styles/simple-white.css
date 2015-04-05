@@ -39,11 +39,7 @@ a:hover { text-decoration: underline; }
 .utils .button:hover { text-decoration: none; }
 .utils .button img { position: relative; left: -1px; top: -2px; }
 .utils .button:last-child /* popup menu */ { position: relative; }
-img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
 .utils .button { visibility: hidden; }
-#tw > div > div:hover img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
-#re > div > div:hover img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
-#tw2 > div > div > div:hover img.fav[src="http://assets3.twitter.com/images/icon_star_empty.gif"],
 #tw > div > div:hover .utils .button,
 #re > div > div:hover .utils .button,
 #tw2 > div > div > div:hover .utils .button,
