@@ -39,7 +39,7 @@ a:hover { text-decoration: underline; }
 #rep .fav, #rep .utils { margin-right: 0; }
 .utils span { vertical-align: bottom; }
 .utils .prop { display: block; float: none; text-align: left; margin: 3px 6px -18px 0; position: relative; top: 2px; }
-.utils .button { float: right; margin: 2px 0 2px 16px; visibility: hidden; }
+.utils .button { float: right; margin: 2px 0 2px 16px; }
 .utils .button:hover { text-decoration: none; }
 .utils .button img { position: relative; margin-top: 4px; }
 .utils .button:last-child /* popup menu */ { position: relative; }
