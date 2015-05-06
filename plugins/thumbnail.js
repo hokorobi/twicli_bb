@@ -54,9 +54,6 @@ registerPlugin({
 						addThumbnail(elem, p, _url);
 					});
 		}
-		else if (url.match(/^http:\/\/yfrog\.com\/\w+$/)) {
-			addThumbnail(elem, url + '.th.jpg', url);
-		}
 		else if (flickr_id = flickrPhotoID(url)) {
 			var _url = url;
 			xds.load('http://www.flickr.com/services/rest?method=flickr.photos.getInfo'+
