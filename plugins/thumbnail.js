@@ -144,6 +144,9 @@ registerPlugin({
 		else if (url.match(/^http:\/\/miil\.me\/p\//)) {
 			addThumbnail(elem, url + '.jpeg?size=240', url);
 		}
+		else if (url.match(/^http:\/\/blogs\.c\.yimg\.jp\//)) {
+			addThumbnail(elem, url, url);
+		}
 		else if (url.match(/^http:\/\/gifzo\.net/)) {
 			addThumbnail(elem, url + '.gif' , url);
 		}
