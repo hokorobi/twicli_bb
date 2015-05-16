@@ -118,6 +118,13 @@ var shortcutkey_plugin = {
 					alert('shortcutkey error: ' + e);
 				}
 				return false;
+			case 78+lower: // n : 最上部のツイートに移動
+				ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
+						 $('tw2c')).childNodes[0];
+				ele = ele && ele.childNodes[0];
+				if (ele && ele.tw)
+					shortcutkey_plugin.selectTweet(ev, ele);
+				return false;
 			case 40: // ↓
 			case 74+lower: // j : 1つ下を選択
 				if (!selected) {
@@ -287,13 +294,6 @@ var shortcutkey_plugin = {
 				return false;
 			case 9: // Tab : 発言欄とツイート欄を移動
 				(document.activeElement.id == 'fst') ? $('fst').blur() : $('fst').focus();
-				return false;
-			case 78+lower: // n : 最上部のツイートに移動
-				ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
-						 $('tw2c')).childNodes[0];
-				ele = ele && ele.childNodes[0];
-				if (ele && ele.tw)
-					shortcutkey_plugin.selectTweet(ev, ele);
 				return false;
 			case 88+lower: // x : タブを閉じる
 				var closetab = $('tws-closetab') || $('regexp-closetab');
