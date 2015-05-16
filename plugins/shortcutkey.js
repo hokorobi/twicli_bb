@@ -119,31 +119,24 @@ var shortcutkey_plugin = {
 				}
 				return false;
 			case 78+lower: // n : 最上部のツイートに移動
-				ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
-						 $('tw2c')).childNodes[0];
-				ele = ele && ele.childNodes[0];
-				if (ele && ele.tw)
-					shortcutkey_plugin.selectTweet(ev, ele);
+				shortcutkey_plugin.selectFirst(ev);
 				return false;
 			case 40: // ↓
 			case 74+lower: // j : 1つ下を選択
 				if (!selected) {
-					ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
-							 $('tw2c')).childNodes[0];
-					while (ele && !(ele.childNodes[0] && ele.childNodes[0].tw)) ele = ele.nextSibling;
-					ele = ele && ele.childNodes[0];
-				} else {
-					ele = selected;
-					while (ele == selected || ele && (!ele.tw || ele.style.display == 'none' || !ele.offsetHeight)) {
-						if (ele.nextSibling)
-							ele = ele.nextSibling;
-						else {
-							var pele = ele.parentNode.nextSibling;
-							ele = null;
-							while (!ele && pele) {
-								ele = pele.childNodes[0] && pele.childNodes[0].tw && pele.childNodes[0];
-								pele = pele.nextSibling;
-							}
+					shortcutkey_plugin.selectFirst(ev);
+					return false;
+				}
+				ele = selected;
+				while (ele == selected || ele && (!ele.tw || ele.style.display == 'none' || !ele.offsetHeight)) {
+					if (ele.nextSibling)
+						ele = ele.nextSibling;
+					else {
+						var pele = ele.parentNode.nextSibling;
+						ele = null;
+						while (!ele && pele) {
+							ele = pele.childNodes[0] && pele.childNodes[0].tw && pele.childNodes[0];
+							pele = pele.nextSibling;
 						}
 					}
 				}
@@ -315,6 +308,13 @@ var shortcutkey_plugin = {
 		return true;
 	},
 
+	selectFirst: function(ev) {
+		ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
+			   $('tw2c')).childNodes[0];
+		ele = ele && ele.childNodes[0];
+		if (ele && ele.tw)
+			this.selectTweet(ev, ele);
+	},
 	startInclementalSearch: function(ev) {
 		ev = ev || window.event;
 		if ((ev.keyCode || ev.charCode) == 27/*esc*/) return shortcutkey_plugin.resetInclementalSearch();
