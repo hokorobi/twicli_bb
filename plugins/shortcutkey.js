@@ -146,8 +146,7 @@ var shortcutkey_plugin = {
 			case 38: // ↑
 			case 75+lower: // k : 1つ上を選択
 				if (!selected) {
-					ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
-							 $('tw2c'));
+					ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') : $('tw2c'));
 					ele = ele.childNodes[ele.childNodes.length - 1];
 					while (ele && !(ele.childNodes[0] && ele.childNodes[0].tw)) ele = ele.previousSibling;
 					ele = ele && ele.childNodes[ele.childNodes.length - 1];
@@ -160,8 +159,7 @@ var shortcutkey_plugin = {
 							var pele = ele.parentNode.previousSibling;
 							ele = null;
 							while (!ele && pele) {
-								ele = pele.childNodes[0] && pele.childNodes[0].tw &&
-										 pele.childNodes[pele.childNodes.length - 1];
+								ele = pele.childNodes[0] && pele.childNodes[0].tw && pele.childNodes[pele.childNodes.length - 1];
 								pele = pele.previousSibling;
 							}
 						}
@@ -309,8 +307,7 @@ var shortcutkey_plugin = {
 	},
 
 	selectFirst: function(ev) {
-		ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
-			   $('tw2c')).childNodes[0];
+		ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') : $('tw2c')).childNodes[0];
 		ele = ele && ele.childNodes[0];
 		if (ele && ele.tw)
 			this.selectTweet(ev, ele);
