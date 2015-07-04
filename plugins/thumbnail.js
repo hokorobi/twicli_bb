@@ -59,9 +59,6 @@ registerPlugin(thumbnail_plugin = {
 						addThumbnail(elem, p, _url);
 					});
 		}
-		else if (url.match(/^http:\/\/yfrog\.com\/\w+$/)) {
-			addThumbnail(elem, url + '.th.jpg', url);
-		}
 		else if (flickr_id = flickrPhotoID(url)) {
 			var _url = url;
 			xds.load('http://www.flickr.com/services/rest?method=flickr.photos.getInfo'+
@@ -142,12 +139,21 @@ registerPlugin(thumbnail_plugin = {
 				});
 		}
 		else if (url.match(/^http:\/\/(?:www\.|m\.)?ustream\.tv\/(channel|recorded)\/(?:id\/)?([\w\-]+)/)) {
-		    xds.load("http://api.ustream.tv/json/" + (RegExp.$1=='recorded'?'video':RegExp.$1) + "/" +
+			xds.load("http://api.ustream.tv/json/" + (RegExp.$1=='recorded'?'video':RegExp.$1) + "/" +
 				RegExp.$2 + "/getValueOf/imageUrl?key=8149DBC1DF1083B3F4D8F7F0A1978F57",
 				function(img) {
 					if (img && img.medium)
 						addThumbnail(elem, img.medium, url);
 				});
+		}
+		else if (url.match(/^http:\/\/miil\.me\/p\//)) {
+			addThumbnail(elem, url + '.jpeg?size=240', url);
+		}
+		else if (url.match(/^http:\/\/blogs\.c\.yimg\.jp\//)) {
+			addThumbnail(elem, url, url);
+		}
+		else if (url.match(/(\.png|\.jpg|\.jpeg|\.gif)$/)) {
+			addThumbnail(elem, url, url);
 		}
 	},
 	changeTheme: function(theme) {
