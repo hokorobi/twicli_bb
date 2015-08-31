@@ -146,7 +146,8 @@ var shortcutkey_plugin = {
 			case 38: // ↑
 			case 75+lower: // k : 1つ上を選択
 				if (!selected) {
-					ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') : $('tw2c'));
+					ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
+							 $('tw2c'));
 					ele = ele.childNodes[ele.childNodes.length - 1];
 					while (ele && !(ele.childNodes[0] && ele.childNodes[0].tw)) ele = ele.previousSibling;
 					ele = ele && ele.childNodes[ele.childNodes.length - 1];
@@ -159,7 +160,8 @@ var shortcutkey_plugin = {
 							var pele = ele.parentNode.previousSibling;
 							ele = null;
 							while (!ele && pele) {
-								ele = pele.childNodes[0] && pele.childNodes[0].tw && pele.childNodes[pele.childNodes.length - 1];
+								ele = pele.childNodes[0] && pele.childNodes[0].tw &&
+										 pele.childNodes[pele.childNodes.length - 1];
 								pele = pele.previousSibling;
 							}
 						}
@@ -242,14 +244,7 @@ var shortcutkey_plugin = {
 						for (i = 0; i < target.childNodes.length; i++) {
 							var target2 = target.childNodes[i];
 							if (target2.tagName == 'A' && target2.innerHTML.substr(0,4) == 'http') {
-								if (link(target2)) (function(url){
-									var a = document.createElement("a");
-									a.href = url;
-									var evt = document.createEvent("MouseEvents");
-									evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
-									a.dispatchEvent(evt);
-									return true;
-								})(target2.href);
+								if (link(target2)) window.open(target2.href, "_blank");
 							}
 						}
 						break;
