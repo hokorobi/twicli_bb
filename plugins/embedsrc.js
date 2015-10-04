@@ -8,6 +8,7 @@
 		{search: /^https?:\/\/amp\.twimg\.com\/v\/([\w-]+)$/, replace: "https://amp.twimg.com/v/$1", type: "iframe"},
 		{search: /^http:\/\/p\.twipple\.jp\/([\w-]+)$/, replace: "http://p.twipple.jp/show/large/$1", type: "iframe"},
 		{search: /^https?:\/\/instagram\.com\/p\/([\w-]+)\/?/, replace: "http://instagram.com/p/$1/media/?size=m", type: "iframe"},
+		{search: /^https?:\/\/.*(?:png|gif|jpg)$/, replace: "$&", type: "iframe"},
 		{search: /^https?:\/\/movapic\.com\/pic\/([\w]+)$/, replace: "http://image.movapic.com/pic/m_$1.jpeg", type: "iframe"},
 		{search: /^https?:\/\/ow\.ly\/i\/([\w]+)$/, replace: "http://static.ow.ly/photos/normal/$1.jpg", type: "iframe"},
 		{search: /^https?:\/\/vimeo\.com\/(?:m\/)?(\d+)$/, replace: "https://player.vimeo.com/video/$1", type: "iframe"}
