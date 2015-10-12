@@ -155,6 +155,9 @@ registerPlugin(thumbnail_plugin = {
 		else if (url.match(/(\.png|\.jpg|\.jpeg|\.gif)$/)) {
 			addThumbnail(elem, url, url);
 		}
+		else if (url.match(/^https?:\/\/pimg\.togetter\.com\//)) {
+			addThumbnail(elem, url, url);
+		}
 	},
 	changeTheme: function(theme) {
 		thumbnailModeSet(theme.thumbnail_mode || 'top');
