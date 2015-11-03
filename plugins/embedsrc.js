@@ -8,7 +8,7 @@
 		{search: /^https?:\/\/amp\.twimg\.com\/v\/([\w-]+)$/, replace: "https://amp.twimg.com/v/$1", type: "iframe"},
 		{search: /^http:\/\/p\.twipple\.jp\/([\w-]+)$/, replace: "http://p.twipple.jp/show/large/$1", type: "image"},
 		{search: /^https?:\/\/instagram\.com\/p\/([\w-]+)\/?/, replace: "http://instagram.com/p/$1/media/?size=m", type: "image"},
-		{search: /^https:\/\/gyazo\.com\/([\w-]+)\/?/, replace: "https://i.gyazo.com/$1.png", type: "image"},
+		{search: /^https:\/\/gyazo\.com\/([\w-]+)\/?/, replace: "https://gyazo.com/$1/raw", type: "image"},
 		{search: /^https?:\/\/.*(?:png|gif|jpg)$/, replace: "$&", type: "image"},
 		{search: /^https?:\/\/pimg\.togetter\.com\//, replace: "$&", type: "image"},
 		{search: /^https?:\/\/movapic\.com\/pic\/([\w]+)$/, replace: "http://image.movapic.com/pic/m_$1.jpeg", type: "iframe"},
