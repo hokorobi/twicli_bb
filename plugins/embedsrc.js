@@ -82,6 +82,10 @@ function dispEmbedSrc(url, link, type) {
 		embedElem.style.display = "block";
 	}
 	switch (type) {
+		case 'image':
+			embedElem.src = url;
+			$('reps').appendChild(embedElem);
+			break;
 		case 'data':
 			$('reps').appendChild(embedElem);
 			embedElem.contentWindow.document.write('<div>' + url + '</div>');
