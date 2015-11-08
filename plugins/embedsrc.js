@@ -7,6 +7,7 @@
 		{search: /^(https?:\/\/(?:i\.)?gyazo\.com\/[0-9a-f]+)(?:\.png)?$/,
 			replace: "$1.png", type: "iframe"},
 		{search: /^https?:\/\/vine\.co\/v\/(\w+)$/, replace: "https://vine.co/v/$1/embed/simple", type: "iframe"},
+		{search: /^http:\/\/img\.ly\/(\w+)$/, replace: "http://img.ly/show/large/$1", type: "iframe"},
 		{search: /^https?:\/\/amp\.twimg\.com\/v\/([\w-]+)$/, replace: "https://amp.twimg.com/v/$1", type: "iframe"},
 		{search: /^http:\/\/p\.twipple\.jp\/([\w-]+)$/, replace: "http://p.twipple.jp/show/large/$1", type: "image"},
 		{search: /^https?:\/\/instagram\.com\/p\/([\w-]+)\/?/, replace: "http://instagram.com/p/$1/media/?size=m", type: "image"},
