@@ -4,8 +4,11 @@
 			replace: "$&/", type: "theta"},
 		{search: /^https?:\/\/(?:\w+\.)?pinterest\.com\/pin\/\d+/,
 			replace: "$&/", type: "pin"},
+		{search: /^https?:\/\/(?:(?:www|m)\.youtube\.com\/watch\?.*v=|youtu\.be\/)([\w\-]+).*$/,
+			replace: "http://www.youtube.com/embed/$1", type: "iframe"},
 		{search: /^(https?:\/\/(?:i\.)?gyazo\.com\/[0-9a-f]+)(?:\.png)?$/,
-			replace: "$1.png", type: "iframe"},
+			replace: "$1.png", type: "image"},
+		{search: /https?:\/\/(?:nico\.ms|www\.nicovideo\.jp\/watch)\/((?!lv)(?!nw)(?!im)[a-z]{2}\d+)/, replace: "http://ext.nicovideo.jp/thumb_watch/$1", type: "script"},
 		{search: /^https?:\/\/vine\.co\/v\/(\w+)$/, replace: "https://vine.co/v/$1/embed/simple", type: "iframe"},
 		{search: /^http:\/\/img\.ly\/(\w+)$/, replace: "http://img.ly/show/large/$1", type: "iframe"},
 		{search: /^https?:\/\/amp\.twimg\.com\/v\/([\w-]+)$/, replace: "https://amp.twimg.com/v/$1", type: "iframe"},
@@ -54,7 +57,20 @@
 					return;
 				}
 			}
-			if (lng.match(/^(http:\/\/[\w\-]+\.tumblr\.com\/)post\/(\d+)/)) {
+			if (lng.match(/^(https?:\/\/www\.slideshare\.net\/[-_0-9a-zA-Z.]+\/[-_0-9a-zA-Z.]+)/)) {
+				link.embedsrc = true;
+				xds.load("http://www.slideshare.net/api/oembed/2?url=" + RegExp.$1 + "&format=jsonp",
+						function(x) {
+							createAnchor(link, function(){
+								dispEmbedSrc("http:\/\/www\.slideshare\.net\/slideshow\/embed_code\/"
+									+ x.slideshow_id,
+									link, 'iframe');
+								return false;
+							});
+							
+						});
+			}
+			else if (lng.match(/^(http:\/\/[\w\-]+\.tumblr\.com\/)post\/(\d+)/)) {
 				xds.load(RegExp.$1+'api/read/json?id='+RegExp.$2,
 					function(x) {
 						var v = x.posts[0]['video-player'];
