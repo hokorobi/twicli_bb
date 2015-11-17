@@ -71,9 +71,6 @@ registerPlugin(thumbnail_plugin = {
 					},
 					null, 1, 'jsoncallback');
 		}
-		else if (url.match(/^(http:\/\/lockerz.com\/s\/\d+|http:\/\/plixi.com\/p\/\d+)/)) {
-			addThumbnail(elem, 'http://api.plixi.com/api/TPAPI.svc/imagefromurl?size=thumbnail&url='+url, url);
-		}
 		else if (url.match(/^http:\/\/img.ly\/(\w+)/)) {
 			addThumbnail(elem, 'http://img.ly/show/thumb/'+RegExp.$1, url);
 		}
