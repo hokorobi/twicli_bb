@@ -8,7 +8,6 @@
 			replace: "http://www.youtube.com/embed/$1", type: "iframe"},
 		{search: /^(https?:\/\/(?:i\.)?gyazo\.com\/[0-9a-f]+)(?:\.png)?$/,
 			replace: "$1.png", type: "image"},
-		{search: /https?:\/\/(?:nico\.ms|www\.nicovideo\.jp\/watch)\/((?!lv)(?!nw)(?!im)[a-z]{2}\d+)/, replace: "http://ext.nicovideo.jp/thumb_watch/$1", type: "script"},
 		{search: /^https?:\/\/vine\.co\/v\/(\w+)$/, replace: "https://vine.co/v/$1/embed/simple", type: "iframe"},
 		{search: /^http:\/\/img\.ly\/(\w+)$/, replace: "http://img.ly/show/large/$1", type: "iframe"},
 		{search: /^https?:\/\/amp\.twimg\.com\/v\/([\w-]+)$/, replace: "https://amp.twimg.com/v/$1", type: "iframe"},
