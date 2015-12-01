@@ -12,7 +12,7 @@
 		{search: /^http:\/\/img\.ly\/(\w+)$/, replace: "http://img.ly/show/large/$1", type: "iframe"},
 		{search: /^https?:\/\/amp\.twimg\.com\/v\/([\w-]+)$/, replace: "https://amp.twimg.com/v/$1", type: "iframe"},
 		{search: /^http:\/\/p\.twipple\.jp\/([\w-]+)$/, replace: "http://p.twipple.jp/show/large/$1", type: "image"},
-		{search: /^https?:\/\/instagram\.com\/p\/([\w-]+)\/?/, replace: "http://instagram.com/p/$1/media/?size=m", type: "image"},
+		{search: /^https?:\/\/(?:www\.)?instagram\.com\/p\/([\w-]+)\/?/, replace: "http://instagram.com/p/$1/media/?size=m", type: "image"},
 		{search: /^https?:\/\/.*(?:png|gif|jpg)$/, replace: "$&", type: "image"},
 		{search: /^https?:\/\/pimg\.togetter\.com\//, replace: "$&", type: "image"},
 		{search: /^https?:\/\/movapic\.com\/pic\/([\w]+)$/, replace: "http://image.movapic.com/pic/m_$1.jpeg", type: "iframe"},
