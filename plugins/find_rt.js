@@ -11,7 +11,7 @@
 			for (var i = 0; i < status.childNodes.length; i++) {
 				var ele = status.childNodes[i];
 				if (ele.nodeType == 3) {// text node
-					if (ele.nodeValue.match(/([\s\S]*)((?:<|＜|←|>|＞|→)\s*[rR][tT])([\s\S]*)/)) {
+					if (ele.nodeValue.match(/([\s\S]*)((?:<|＜|←|>|＞|→)\s*[rRＲ][tTＴ])([\s\S]*)/)) {
 						ele.nodeValue = RegExp.$1;
 						var a = document.createElement('a');
 						a.className = "button";
