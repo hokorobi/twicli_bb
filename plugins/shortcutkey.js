@@ -294,6 +294,11 @@ var shortcutkey_plugin = {
 				$('filter-field').onkeydown = $('filter-field').onkeypress = shortcutkey_plugin.startInclementalSearch;
 				$('filter-field').focus();
 				return false;
+			case 65+lower: // a: tweets_around_tweet
+				if (!selected) return true;
+				if (pluginstr.indexOf('tweets_around_tw.js') == -1) return true;
+				tweets_around_tw.find_tweets_around_tweet(selected, user, id);
+				return false;
 		}
 
 		return true;
