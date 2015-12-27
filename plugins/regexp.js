@@ -187,7 +187,7 @@ registerPlugin({
 					if (tab.pickup[k].filterTL) {
 						// filterTLビットマスク(1:TL 2:@ 4:全タブ)に応じてマッチした発言を隠す
 						if ((tab.pickup[k].filterTL & 1) && twNodeId == 'tw' ||
-						    (tab.pickup[k].filterTL & 2) && twNodeId == 're' ||
+							(tab.pickup[k].filterTL & 2) && twNodeId == 're' ||
 							(tab.pickup[k].filterTL & 4))
 							s.style.display = "none";
 					}
