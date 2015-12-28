@@ -242,14 +242,7 @@ var shortcutkey_plugin = {
 						for (i = 0; i < target.childNodes.length; i++) {
 							var target2 = target.childNodes[i];
 							if (target2.tagName == 'A' && target2.innerHTML.substr(0,4) == 'http') {
-								if (link(target2)) (function(url){
-									var a = document.createElement("a");
-									a.href = url;
-									var evt = document.createEvent("MouseEvents");
-									evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, true, false, false, false, 0, null);
-									a.dispatchEvent(evt);
-									return true;
-								})(target2.href);
+								if (link(target2)) window.open(target2.href, "_blank");
 							}
 						}
 						break;
