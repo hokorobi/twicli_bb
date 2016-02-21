@@ -168,7 +168,7 @@ var shortcutkey_plugin = {
 				if (ele && ele.tw)
 					shortcutkey_plugin.selectTweet(ev, ele);
 				return false;
-			case 70+lower: // f : fav
+			case 83+lower: // s : star (fav)
 				if (!selected) return true;
 				fav($('fav-'+selected.id), id);
 				return false;
