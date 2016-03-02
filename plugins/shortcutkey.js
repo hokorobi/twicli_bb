@@ -234,6 +234,7 @@ var shortcutkey_plugin = {
 					}
 				}
 				return false;
+			case 59: // ; : リンクを必ず別ウィンドウで開く(Open links)
 			case 86+lower: // v : リンクを必ず別ウィンドウで開く(Open links)
 				if (!selected) return true;
 				for (var i = 0; i < selected.childNodes.length; i++) {
