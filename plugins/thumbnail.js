@@ -152,7 +152,7 @@ registerPlugin(thumbnail_plugin = {
 		else if (url.match(/^http:\/\/miil\.me\/p\//)) {
 			addThumbnail(elem, url + '.jpeg?size=240', url);
 		}
-		else if (url.match(/^http:\/\/blogs\.c\.yimg\.jp\//)) {
+		else if (url.match(/^http:\/\/\w+\.c\.yimg\.jp\//)) {
 			addThumbnail(elem, url, url);
 		}
 		else if (url.match(/(\.png|\.jpg|\.jpeg|\.gif)$/)) {
