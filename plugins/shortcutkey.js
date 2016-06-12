@@ -3,7 +3,6 @@ var shortcutkey_plugin = {
 	last_selected_div_id: null, // 前回選択されたtweetのdiv ID(オーバーレイ表示は除く)
 	key_handled: false, // 他プラグインがkeydownを処理済みか：true時はイベント処理しない
 	last_event_date: null, // 最終イベント発生時刻
-	repeat_check: false, // keydown,keypress両指定時のチェック
 
 	// tweetの選択
 	selectTweet: function(ev, div, no_scroll) {
@@ -47,14 +46,6 @@ var shortcutkey_plugin = {
 				return false;
 			}
 			return true;
-		}
-		if (shortcutkey_plugin.repeat_check) {
-			if (ev.type == 'keydown' && code != 38 && code != 40 && code != 74 && code != 75 && code != 191)
-				return true;
-			var date = ev.timeStamp || new Date(); // 連続する30ms以内のイベントは無視
-			if (shortcutkey_plugin.last_event_date && date - shortcutkey_plugin.last_event_date < 30)
-				return true;
-			shortcutkey_plugin.last_event_date = date;
 		}
 		if (ev.type == 'keypress' && navigator.userAgent.indexOf('Firefox') >= 0 && ev.charCode == 0 && ev.keyCode >= 112)
 			return true; // FirefoxでFnキーを解釈しない
