@@ -392,10 +392,6 @@ var shortcutkey_plugin = {
 		this.history = [];
 		if (navigator.userAgent.indexOf('Opera') >= 0)
 			document.onkeypress = this.shortCutKeyDown;
-		else if (navigator.userAgent.indexOf('Firefox') >= 0) {
-			document.onkeydown = document.onkeypress = this.shortCutKeyDown;
-			this.repeat_check = true;
-		}
 		else
 			document.onkeydown = this.shortCutKeyDown;
 	}
