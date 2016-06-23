@@ -52,7 +52,7 @@ a:hover { text-decoration: underline; }
 /* tab */
 #menu a { background: #deded8; color: #888; border-color: #90908e; }
 #menu a.sel { background: #f4f4f2; color: #222; border-bottom-color: #fff; }
-#menu a.sel img { padding: 0; width: 0; height: 0; visibility: hidden; }
+#TL img { padding: 0; width: 0; height: 0; visibility: hidden; }
 #menu a.new { background: #fcfcd0; }
 
 /* character counter */
