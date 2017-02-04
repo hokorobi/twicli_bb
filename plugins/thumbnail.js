@@ -127,7 +127,7 @@ registerPlugin(thumbnail_plugin = {
 						addThumbnail(elem, x.thumbnail, url);
 				});
 		}
-		else if (url.match(/^https?:\/\/gyazo\.com\/([0-9a-f]+))/)) {
+		else if (url.match(/^https?:\/\/gyazo\.com\/([0-9a-f]+))) {
 			xds.load("https://i.gyazo.com/" + encodeURIComponent(RegExp.$1) + ".png",
 				function(x) {
 					if (x && x.thumbnail)
