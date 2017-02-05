@@ -149,7 +149,7 @@ registerPlugin(thumbnail_plugin = {
 						addThumbnail(elem, img.medium, url);
 				});
 		}
-		else if (url.match(/^http:\/\/miil\.me\/p\//)) {
+		else if (url.match(/^https?:\/\/miil\.me\/p\//)) {
 			addThumbnail(elem, url + '.jpeg?size=240', url);
 		}
 		else if (url.match(/^http:\/\/\w+\.c\.yimg\.jp\//)) {
