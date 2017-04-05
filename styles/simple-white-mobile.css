@@ -1,0 +1,90 @@
+/**
+ * simple-white.css
+ * http://d.hatena.ne.jp/scientre/20110101/twicli_stylesheet
+ */
+.match-NG, #pickup-NG {display: none !important;}
+
+body, #fst, #menu a {font-family: "ヒラギノ角ゴProN", "メイリオ", sans-serif;}
+.prop, .utils .button, #rep a.close {font-size: 10px;}
+body, td, #counter, #menu, #user_info td, #rep, #popup, #pref textarea, .status {font-size: 12px;}
+#tw, #re, #tw2, #fst {font-size: 11px;}
+#rep a.close {font-size: 24px;}
+#popup {font-size: 18px;}
+.status, .prop, #tw2h, #tw2h table, #fst {line-height: 1.5;}
+body, table {line-height: 1;}
+
+#tw, #re, #tw2 {background: #fefefe;}
+#tw > div:first-child {background: #ffeef4;}
+.tome {background: #ffffe4;}
+.fromme {background: #f2f2f4;}
+.emp {background-color: #ffd0de;}
+a {color: #088253; text-decoration: none;}
+a:hover {text-decoration: underline;}
+.selected {background-color: #cef !important;}
+
+/* button style */
+#rst, .utils .button, #rep a.close {display: block; overflow: hidden;
+ padding: 0; line-height: 25px; width: 25px; height: 25px; text-align: center;
+ background: #deded8; color: #666; border: solid 1px #ccc;
+ -moz-border-radius: 25px; border-radius: 25px;}
+
+#fst /* input textarea */ {margin: 0 0 -1px; max-width: calc(100% - 40px);}
+#tw > div {border: none;}
+#tw > div > div, #re > div > div, #tw2c > div > div {padding: 4px 20px 2px 4px; border-bottom: 1px solid #ccc;}
+.uicon {margin: 0;}
+.uid {display: block; width: 32px; height: 32px; float: left; margin: 0 6px 0 -32px; text-indent: -999px; position: relative; z-index: 1; text-decoration: none;}
+.uname {display: none;}
+.fav {margin-right: -16px; width: 16px; height: 16px;}
+.utils {display: block; margin: 0 -16px 2px 0;}
+#rep .fav, #rep .utils {margin-right: 0;}
+.utils span {vertical-align: bottom;}
+.utils .prop {display: block; float: none; text-align: left; margin: 3px 6px -18px 0; position: relative; top: 2px;}
+.utils .button {float: right; margin: 2px 0 2px 16px;}
+.utils .button:hover {text-decoration: none;}
+.utils .button img {position: relative; margin-top: 4px;}
+.utils .button:last-child /* popup menu */ {position: relative;}
+img.fav /* fav button */ {display: none;}
+#go {display: none;}
+#rst /* tweet reset button */ {float: left; margin: 2px 0 4px 0; top: initial; left: initial; right: 2px;}
+#rst:before {content: '\00d7'; display: block;}
+#control /* textarea + tab */ {border-color: #92928e;}
+#menu2 a /* tab */ {min-width: 2em; text-align: center;}
+#tw > div > div:hover .utils .button,
+#re > div > div:hover .utils .button,
+#tw2 > div > div > div:hover .utils .button,
+#rep .utils .button,
+.inrep .utils .button.reply {visibility: visible;}
+.get-next /* get next page */ {color: #fff; line-height: 2; border-bottom: none !important;}
+.source {pointer-events:none;}
+
+/* tab */
+#menu a {background: #deded8; color: #888; border-color: #90908e; margin-right: 6px;}
+#menu a.sel {background: #f4f4f2; color: #222; border-bottom-color: #fff;}
+#menu a.new {background: #fcfcd0;}
+
+/* character counter */
+#counter-div {opacity: 0.6; width: 36px;}
+#counter {background: #000; line-height: 16px; height: 17px; -moz-border-radius: 5px;}
+#counter-p1 {border-right: solid 4px #000;}
+#counter-p2 {border-left: solid 4px #000;}
+#counter-p1, #counter-p2 {border-top-width: 7px;}
+
+/* reply popup */
+#rep {left: 20px; right: 6px; z-index: 3; width: auto; padding: 4px;}
+#rep a.close /* button */ {float: left; margin: 8px 4px 16px 20px;}
+#rep a.close:before {content: "\21d4"; display: block;}
+#rep a.close:first-child:before {content: "\00d7";}
+#reps {clear: left;}
+#rep, #popup {background: #eee; border: solid 3px #666; border-radius: 10px; -moz-border-radius: 10px;}
+
+#popup_hide {z-index: 5;}
+#popup {padding: 6px 0; z-index: 7;}
+#popup a {background: transparent; border: none; margin: 0; padding: 2px 6px;}
+#popup a:hover {background: #35d; color: #fff;}
+#popup hr {background: #ccc; border: none; height: 1px; margin: 4px 1px;}
+
+.thumbnail-image {border: none; width: auto; height: auto; max-width: 150px; max-height: 150px; vertical-align: middle;}
+.thumbnail-image:hover {border: none; width: auto; opacity: 0.8;}
+.thumbnail-link {margin: 4px 0 0; text-align: center; border: none; display: block; float: none;}
+.thumbnail-link a {margin: 0 10px; background: #fff;}
+
