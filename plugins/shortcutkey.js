@@ -175,7 +175,7 @@ var shortcutkey_plugin = {
 				if (!selected) return true;
 				replyTo(user, id, selected.id);
 				return false;
-			case 76: // L : リストの全ツイート取得(get all tweets in the List)
+			case 77+lower: // m : リストの全ツイート取得(get all tweets in the List)
 				if (!$('list_get_all')) return true;
 				$('list_get_all').onclick();
 				return false;
