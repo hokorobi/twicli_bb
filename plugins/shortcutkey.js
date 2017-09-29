@@ -175,7 +175,7 @@ var shortcutkey_plugin = {
 				if (!selected) return true;
 				replyTo(user, id, selected.id);
 				return false;
-			case 76+lower: // l : リストの全ツイート取得(get all tweets in the List)
+			case 76: // L : リストの全ツイート取得(get all tweets in the List)
 				if (!$('list_get_all')) return true;
 				$('list_get_all').onclick();
 				return false;
@@ -188,7 +188,7 @@ var shortcutkey_plugin = {
 				if (!selected) return true;
 				retweetStatus(id, selected);
 				return false;
-			case 84+lower: // t : ツイートをwebで開く
+			case 76+lower: // l : ツイートをwebで開く
 				if(!selected) return true;
 				window.open(twitterURL + tw.screen_name + '/statuses/' + tw.id_str);
 				return false;
@@ -225,7 +225,6 @@ var shortcutkey_plugin = {
 					}
 				}
 				return false;
-			case 59: // ; : リンクを必ず別ウィンドウで開く(Open links)
 			case 86+lower: // v : リンクを必ず別ウィンドウで開く(Open links)
 				if (!selected) return true;
 				for (var i = 0; i < selected.childNodes.length; i++) {
