@@ -3,7 +3,6 @@ var shortcutkey_plugin = {
 	last_selected_div_id: null, // 前回選択されたtweetのdiv ID(オーバーレイ表示は除く)
 	key_handled: false, // 他プラグインがkeydownを処理済みか：true時はイベント処理しない
 	last_event_date: null, // 最終イベント発生時刻
-	repeat_check: false, // keydown,keypress両指定時のチェック
 
 	// tweetの選択
 	selectTweet: function(ev, div, no_scroll) {
@@ -41,20 +40,12 @@ var shortcutkey_plugin = {
 		if ((ev.shiftKey || ev.altKey || ev.ctrlKey || ev.metaKey || ev.modifiers) && !(ev.shiftKey && code == 191)) return true;
 		//$("fst").value = code;
 		if (document.activeElement.tagName == 'INPUT' || document.activeElement.tagName == 'TEXTAREA') {
-			// inputフォーカス時はesc以外をパススルー
-			if (code == 27) { // esc
+			// inputフォーカス時はesc,Tab以外をパススルー
+			if (code == 27 || code == 9) { // esc or Tab
 				if (document.activeElement) document.activeElement.blur();
 				return false;
 			}
 			return true;
-		}
-		if (shortcutkey_plugin.repeat_check) {
-			if (ev.type == 'keydown' && code != 38 && code != 40 && code != 74 && code != 75 && code != 191)
-				return true;
-			var date = ev.timeStamp || new Date(); // 連続する30ms以内のイベントは無視
-			if (shortcutkey_plugin.last_event_date && date - shortcutkey_plugin.last_event_date < 30)
-				return true;
-			shortcutkey_plugin.last_event_date = date;
 		}
 		if (ev.type == 'keypress' && navigator.userAgent.indexOf('Firefox') >= 0 && ev.charCode == 0 && ev.keyCode >= 112)
 			return true; // FirefoxでFnキーを解釈しない
@@ -97,27 +88,19 @@ var shortcutkey_plugin = {
 				else
 					shortcutkey_plugin.deselectTweet();
 				return false;
-			case 49: // 1 : TLタブ
+			case 51: // 3 : TLタブ
 				switchTL();
 				return false;
-			case 50: // 2 : @タブ
+			case 52: // 4 : @タブ
 				switchReply();
 				return false;
-			case 51: // 3 : ユーザタブ
-				switchUser();
-				return false;
-			case 52: // 4 : Dタブ
-				switchDirect();
-				return false;
-			case 53: // 5 : +タブ
-				switchMisc();
-				return false;
-			case 54: // 6 : タブ6
-			case 55: // 7 : タブ7
-			case 56: // 8 : タブ8
-			case 57: // 9 : タブ9
-			case 48: // 0 : タブ10
-				var num = code == 48 ? 9 : code - 49;
+			case 53: // 5 : タブ6
+			case 54: // 6 : タブ7
+			case 55: // 7 : タブ8
+			case 56: // 8 : タブ9
+			case 57: // 9 : タブ10
+			case 48: // 0 : タブ11
+				var num = code == 48 ? 10 : code - 48;
 				var menu = $('menu2').childNodes[num];
 				if (!menu || !menu.onclick) return true;
 				try {
@@ -126,25 +109,25 @@ var shortcutkey_plugin = {
 					alert('shortcutkey error: ' + e);
 				}
 				return false;
+			case 78+lower: // n : 最上部のツイートに移動
+				shortcutkey_plugin.selectFirst(ev);
+				return false;
 			case 40: // ↓
 			case 74+lower: // j : 1つ下を選択
 				if (!selected) {
-					ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
-							 $('tw2c')).childNodes[0];
-					while (ele && !(ele.childNodes[0] && ele.childNodes[0].tw)) ele = ele.nextSibling;
-					ele = ele && ele.childNodes[0];
-				} else {
-					ele = selected;
-					while (ele == selected || ele && (!ele.tw || ele.style.display == 'none' || !ele.offsetHeight)) {
-						if (ele.nextSibling)
-							ele = ele.nextSibling;
-						else {
-							var pele = ele.parentNode.nextSibling;
-							ele = null;
-							while (!ele && pele) {
-								ele = pele.childNodes[0] && pele.childNodes[0].tw && pele.childNodes[0];
-								pele = pele.nextSibling;
-							}
+					shortcutkey_plugin.selectFirst(ev);
+					return false;
+				}
+				ele = selected;
+				while (ele == selected || ele && (!ele.tw || ele.style.display == 'none' || !ele.offsetHeight)) {
+					if (ele.nextSibling)
+						ele = ele.nextSibling;
+					else {
+						var pele = ele.parentNode.nextSibling;
+						ele = null;
+						while (!ele && pele) {
+							ele = pele.childNodes[0] && pele.childNodes[0].tw && pele.childNodes[0];
+							pele = pele.nextSibling;
 						}
 					}
 				}
@@ -154,8 +137,7 @@ var shortcutkey_plugin = {
 			case 38: // ↑
 			case 75+lower: // k : 1つ上を選択
 				if (!selected) {
-					ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') :
-							 $('tw2c'));
+					ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') : $('tw2c'));
 					ele = ele.childNodes[ele.childNodes.length - 1];
 					while (ele && !(ele.childNodes[0] && ele.childNodes[0].tw)) ele = ele.previousSibling;
 					ele = ele && ele.childNodes[ele.childNodes.length - 1];
@@ -168,8 +150,7 @@ var shortcutkey_plugin = {
 							var pele = ele.parentNode.previousSibling;
 							ele = null;
 							while (!ele && pele) {
-								ele = pele.childNodes[0] && pele.childNodes[0].tw &&
-										 pele.childNodes[pele.childNodes.length - 1];
+								ele = pele.childNodes[0] && pele.childNodes[0].tw && pele.childNodes[pele.childNodes.length - 1];
 								pele = pele.previousSibling;
 							}
 						}
@@ -178,7 +159,7 @@ var shortcutkey_plugin = {
 				if (ele && ele.tw)
 					shortcutkey_plugin.selectTweet(ev, ele);
 				return false;
-			case 70+lower: // f : fav
+			case 83+lower: // s : star (fav)
 				if (!selected) return true;
 				fav($('fav-'+selected.id), id);
 				return false;
@@ -194,7 +175,7 @@ var shortcutkey_plugin = {
 				if (!selected) return true;
 				replyTo(user, id, selected.id);
 				return false;
-			case 76+lower: // l : リストの全ツイート取得(get all tweets in the List)
+			case 76: // L : リストの全ツイート取得(get all tweets in the List)
 				if (!$('list_get_all')) return true;
 				$('list_get_all').onclick();
 				return false;
@@ -206,6 +187,14 @@ var shortcutkey_plugin = {
 			case 82+lower: // r : リツイート(Retweet)
 				if (!selected) return true;
 				retweetStatus(id, selected);
+				return false;
+			case 76+lower: // l : ツイートをwebで開く
+				if(!selected) return true;
+				window.open(twitterURL + tw.screen_name + '/statuses/' + tw.id_str);
+				return false;
+			case 87+lower: // w : ユーザのwebサイトを開く
+				if(!selected || !tw.user.url) return true;
+				window.open(tw.user.url);
 				return false;
 			case 81+lower: // q : RT:を付けて引用(Quote with RT:)
 				if (!selected) return true;
@@ -220,17 +209,23 @@ var shortcutkey_plugin = {
 				if (selected_menu.id != "direct" && user != myname) return true;
 				deleteStatus(id);
 				return false;
-			case 84+lower: // t : 翻訳(Translate)
+			case 71+lower: // g : ハッシュタグを検索(hashtaG)
 				if (!selected) return true;
-				translateStatus(selected.id);
+				for (var i = 0; i < selected.childNodes.length; i++) {
+					var target = selected.childNodes[i]
+					if (target.id && target.id.substr(0,5) == 'text-') {
+						for (i = 0; i < target.childNodes.length; i++) {
+							var target2 = target.childNodes[i];
+							if (target2.tagName == 'A' && target2.className.indexOf('hashtag') > -1) {
+								target2.onclick();
+								break;
+							}
+						}
+						break;
+					}
+				}
 				return false;
-			case 71+lower: // g : 地図表示(Geo map)
-				if (!selected) return true;
-				var geomap = $('geomap-'+selected.id);
-				if (geomap.onclick())
-					window.open(geomap.href, '_blank');
-				return false;
-			case 79+lower: // o : リンクを開く(Open links)
+			case 86+lower: // v : リンクを必ず別ウィンドウで開く(Open links)
 				if (!selected) return true;
 				for (var i = 0; i < selected.childNodes.length; i++) {
 					var target = selected.childNodes[i]
@@ -245,24 +240,35 @@ var shortcutkey_plugin = {
 					}
 				}
 				return false;
-			case 86+lower: // v : 写真等のリンク先内容を表示(View links)
+			case 79+lower: // o : リンクを開く(Open links)
 				if (!selected) return true;
 				for (var i = 0; i < selected.childNodes.length; i++) {
 					var target = selected.childNodes[i]
 					if (target.id && target.id.substr(0,5) == 'text-') {
-						for (i = 0; i < target.childNodes.length; i++) {
+						for (i = target.childNodes.length - 1; i >= 0; i--) {
 							var target2 = target.childNodes[i];
-							if (target2.tagName == 'A' && target2.className == 'button' && target2.onclick) {
-								target2.onclick();
-								break;
+							if (target2.tagName == 'A') {
+								if (target2.className == 'button' && target2.onclick) {
+									target2.onclick();
+									break;
+								}
+								if (target2.innerHTML.substr(0,4) == 'http') {
+									if (link(target2)) (function(url){
+										var a = document.createElement("a");
+										a.href = url;
+										var evt = new MouseEvent("click", {"ctrlKey": true});
+										a.dispatchEvent(evt);
+										return true;
+									})(target2.href);
+								}
 							}
 						}
 						break;
 					}
 				}
 				return false;
-			case 77+lower: // m : 発言欄へ移動(Move to textarea)
-				$('fst').focus();
+			case 9: // Tab : 発言欄とツイート欄を移動
+				(document.activeElement.id == 'fst') ? $('fst').blur() : $('fst').focus();
 				return false;
 			case 88+lower: // x : タブを閉じる
 				var closetab = $('tws-closetab') || $('regexp-closetab');
@@ -279,11 +285,22 @@ var shortcutkey_plugin = {
 				$('filter-field').onkeydown = $('filter-field').onkeypress = shortcutkey_plugin.startInclementalSearch;
 				$('filter-field').focus();
 				return false;
+			case 65+lower: // a: tweets_around_tweet
+				if (!selected) return true;
+				if (pluginstr.indexOf('tweets_around_tw.js') == -1) return true;
+				tweets_around_tw.find_tweets_around_tweet(selected, user, id);
+				return false;
 		}
 
 		return true;
 	},
 
+	selectFirst: function(ev) {
+		ele = (selected_menu.id == 'TL' ? $('tw') : selected_menu.id == 'reply' ? $('re') : $('tw2c')).childNodes[0];
+		ele = ele && ele.childNodes[0];
+		if (ele && ele.tw)
+			this.selectTweet(ev, ele);
+	},
 	startInclementalSearch: function(ev) {
 		ev = ev || window.event;
 		if ((ev.keyCode || ev.charCode) == 27/*esc*/) return shortcutkey_plugin.resetInclementalSearch();
@@ -365,10 +382,6 @@ var shortcutkey_plugin = {
 		this.history = [];
 		if (navigator.userAgent.indexOf('Opera') >= 0)
 			document.onkeypress = this.shortCutKeyDown;
-		else if (navigator.userAgent.indexOf('Firefox') >= 0) {
-			document.onkeydown = document.onkeypress = this.shortCutKeyDown;
-			this.repeat_check = true;
-		}
 		else
 			document.onkeydown = this.shortCutKeyDown;
 	}
