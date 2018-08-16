@@ -64,9 +64,6 @@ registerPlugin(thumbnail_plugin = {
 						addThumbnail(elem, p, _url);
 					});
 		}
-		else if (url.match(/^http:\/\/yfrog\.com\/\w+$/)) {
-			addThumbnail(elem, url + '.th.jpg', url);
-		}
 		else if (flickr_id = flickrPhotoID(url)) {
 			var _url = url;
 			xds.load('https://www.flickr.com/services/rest?method=flickr.photos.getInfo'+
@@ -78,9 +75,6 @@ registerPlugin(thumbnail_plugin = {
 									p.id+'_'+p.secret+'_s.jpg', _url);
 					},
 					null, 1, 'jsoncallback');
-		}
-		else if (url.match(/^(http:\/\/lockerz.com\/s\/\d+|http:\/\/plixi.com\/p\/\d+)/)) {
-			addThumbnail(elem, 'http://api.plixi.com/api/TPAPI.svc/imagefromurl?size=thumbnail&url='+url, url);
 		}
 		else if (url.match(/^http:\/\/img.ly\/(\w+)/)) {
 			addThumbnail(elem, 'http://img.ly/show/thumb/'+RegExp.$1, url);
@@ -103,9 +97,6 @@ registerPlugin(thumbnail_plugin = {
 		}
 		else if (url.match(/^(https?:\/\/(?:www\.)?(?:instagr\.am|instagram\.com)\/p\/[\w\-]+)\/?(?:\??|$)/)) {
 			addThumbnail(elem, RegExp.$1+'/media/?size=t', url);
-		}
-		else if (url.match(/^(http:\/\/picplz.com\/\w+)/)) {
-			addThumbnail(elem, url+'/thumb/150', url);
 		}
 		else if (url.match(/^http:\/\/photozou\.jp\/photo\/show\/\d+\/(\d+)/)) {
 			addThumbnail(elem, "http://art"+Math.floor(Math.random()*40+1)+".photozou.jp/bin/photo/"+
@@ -136,12 +127,8 @@ registerPlugin(thumbnail_plugin = {
 						addThumbnail(elem, x.thumbnail, url);
 				});
 		}
-		else if (url.match(/^(https?:\/\/(?:i\.)?gyazo\.com\/[0-9a-f]+)(?:\.png)?/)) {
-			xds.load("http://thumbnail-url.appspot.com/url?url=" + encodeURIComponent(RegExp.$1),
-				function(x) {
-					if (x && x.thumbnail)
-					addThumbnail(elem, x.thumbnail, url);
-			});
+		else if (url.match(/^https?:\/\/(?:i\.)?gyazo\.com\/([0-9a-f]+)(?:\.png)?/)) {
+			addThumbnail(elem, "https://i.gyazo.com/" + RegExp.$1 + ".png", url);
 		}
 		else if (url.match(/^(https?:\/\/(?:www\.)?amazon\.(?:co\.jp|jp|com)\/.*(?:d|dp|product|ASIN)[\/%].+)/)) {
 			xds.load("http://thumbnail-url.appspot.com/url?url=" + encodeURIComponent(RegExp.$1),
@@ -151,12 +138,24 @@ registerPlugin(thumbnail_plugin = {
 				});
 		}
 		else if (url.match(/^http:\/\/(?:www\.|m\.)?ustream\.tv\/(channel|recorded)\/(?:id\/)?([\w\-]+)/)) {
-		    xds.load("http://api.ustream.tv/json/" + (RegExp.$1=='recorded'?'video':RegExp.$1) + "/" +
+			xds.load("http://api.ustream.tv/json/" + (RegExp.$1=='recorded'?'video':RegExp.$1) + "/" +
 				RegExp.$2 + "/getValueOf/imageUrl?key=8149DBC1DF1083B3F4D8F7F0A1978F57",
 				function(img) {
 					if (img && img.medium)
 						addThumbnail(elem, img.medium, url);
 				});
+		}
+		else if (url.match(/^https?:\/\/miil\.me\/p\//)) {
+			addThumbnail(elem, url + '.jpeg?size=240', url);
+		}
+		else if (url.match(/^http:\/\/\w+\.c\.yimg\.jp\//)) {
+			addThumbnail(elem, url, url);
+		}
+		else if (url.match(/(\.png|\.jpg|\.jpeg|\.gif)$/)) {
+			addThumbnail(elem, url, url);
+		}
+		else if (url.match(/^https?:\/\/pimg\.togetter\.com\//)) {
+			addThumbnail(elem, url, url);
 		}
 	},
 	changeTheme: function(theme) {
