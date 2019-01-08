@@ -103,7 +103,7 @@ registerPlugin(thumbnail_plugin = {
 							RegExp.$1 +"/org.bin?size=120", url);
 		}
 		else if (url.match(/^(https?:\/\/www\.slideshare\.net\/)(?!(?:mobile\/)?slideshow)(?:mobile\/)?([-_0-9a-zA-Z]+\/[-_0-9a-zA-Z]+)/)) {
-			xds.load("http://www.slideshare.net/api/oembed/2?url=" + RegExp.$1 + RegExp.$2 + "&format=jsonp",
+			xds.load("//www.slideshare.net/api/oembed/2?url=" + RegExp.$1 + RegExp.$2 + "&format=jsonp",
 					function(x) {
 						addThumbnail(elem, (x.thumbnail.substr(0,2) == '//' ? 'http:' : '' )+ x.thumbnail, url);
 					});
@@ -115,30 +115,34 @@ registerPlugin(thumbnail_plugin = {
 			addThumbnail(elem, RegExp.$1+':thumbnail', url);
 		}
 		else if (url.match(/^https?:\/\/vimeo\.com\/(?:m\/)?(\d+)$/)) {
-			xds.load("http://vimeo.com/api/v2/video/" + RegExp.$1 + ".json",
+			xds.load("//vimeo.com/api/v2/video/" + RegExp.$1 + ".json",
 				function(x) {
 					addThumbnail(elem, x[0].thumbnail_medium, url, x[0].title);
 				});
 		}
 		else if (url.match(/^(http:\/\/www\.pixiv\.net\/member_illust\.php\?(?:.*&)*illust_id=\d+.*)/)) {
-			xds.load("http://thumbnail-url.appspot.com/url?url=" + encodeURIComponent(RegExp.$1),
+			xds.load("//thumbnail-url.appspot.com/url?url=" + encodeURIComponent(RegExp.$1),
 				function(x) {
 					if (x && x.thumbnail)
 						addThumbnail(elem, x.thumbnail, url);
 				});
 		}
-		else if (url.match(/^https?:\/\/(?:i\.)?gyazo\.com\/([0-9a-f]+)(?:\.png)?/)) {
-			addThumbnail(elem, "https://i.gyazo.com/" + RegExp.$1 + ".png", url);
+		else if (url.match(/^(https?:\/\/(?:i\.)?gyazo\.com\/[0-9a-f]+)(?:\.png)?/)) {
+			xds.load("//thumbnail-url.appspot.com/url?url=" + encodeURIComponent(RegExp.$1),
+				function(x) {
+					if (x && x.thumbnail)
+					addThumbnail(elem, x.thumbnail, url);
+			});
 		}
 		else if (url.match(/^(https?:\/\/(?:www\.)?amazon\.(?:co\.jp|jp|com)\/.*(?:d|dp|product|ASIN)[\/%].+)/)) {
-			xds.load("http://thumbnail-url.appspot.com/url?url=" + encodeURIComponent(RegExp.$1),
+			xds.load("//thumbnail-url.appspot.com/url?url=" + encodeURIComponent(RegExp.$1),
 				function(x) {
 					if (x && x.thumbnail)
 						addThumbnail(elem, x.thumbnail, x.link || url, x.title);
 				});
 		}
 		else if (url.match(/^http:\/\/(?:www\.|m\.)?ustream\.tv\/(channel|recorded)\/(?:id\/)?([\w\-]+)/)) {
-			xds.load("http://api.ustream.tv/json/" + (RegExp.$1=='recorded'?'video':RegExp.$1) + "/" +
+		    xds.load("http://api.ustream.tv/json/" + (RegExp.$1=='recorded'?'video':RegExp.$1) + "/" +
 				RegExp.$2 + "/getValueOf/imageUrl?key=8149DBC1DF1083B3F4D8F7F0A1978F57",
 				function(img) {
 					if (img && img.medium)
