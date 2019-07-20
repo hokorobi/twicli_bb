@@ -6,12 +6,13 @@
 
 var tweScript = document.createElement('script');
 tweScript.type = 'text/javascript';
-tweScript.src = '//twemoji.maxcdn.com/2/twemoji.min.js';
+tweScript.src = '//twemoji.maxcdn.com/v/latest/twemoji.min.js';
+tweScript.crossorigin = 'anonymous';
 document.getElementsByTagName('body')[0].appendChild(tweScript);
 
 var emojiStyle = document.createElement('style');
 emojiStyle.type = 'text/css';
-emojiStyle.innerHTML = '.flag img.emoji { margin: 0 0.3em; width: 1em; }';
+emojiStyle.innerHTML = 'img.emoji { margin: 0 0.3em; height: 1em; vertical-align: text-bottom; }';
 document.getElementsByTagName('head')[0].appendChild(emojiStyle);
 
 registerPlugin({
@@ -469,6 +470,12 @@ registerPlugin({
 			'超夢': 'WBPikachu_Mewtwo',
 			'МЬЮТУ': 'WBPikachu_Mewtwo',
 			'DETECTIVEPIKACHU': 'WB_Pikachu_2018',
+			'ポケモン映画': 'Pokemon_Mew_2019_Emoji',
+			'ミュウ': 'Pokemon_Mew_2019_Emoji',
+			'ミュウツーの逆襲': 'Pokemon_Mew_2019_Emoji',
+			'ミュウツーの逆襲前夜祭': 'Pokemon_Mew_2019_Emoji',
+			'すべてはここからはじまった': 'Pokemon_Mew_2019_Emoji',
+			'GOSNAPSHOT': 'PokemonGoJP_GoSnapshot_2019',
 			// [3月27日は「#さくらの日」](https://blog.twitter.com/ja_jp/topics/events/2019/sakura_day2019.html)
 			'さくらの日': 'CherryBlossom_Sakura_2019',
 			'さくら': 'CherryBlossom_Sakura_2019',
@@ -509,6 +516,10 @@ registerPlugin({
 			'父の日': 'FathersDay_2019',
 			'FATHERSDAY': 'FathersDay_2019',
 			'お父さんありがとう': 'FathersDay_2019',
+			// ---- 新海誠監督映画 ----
+			'君の名は': 'YourNameMovie_2019',
+			'YOURNAME': 'YourNameMovie_2019',
+			'天気の子': 'Toho_Tenkinoko_2019',
 			// ---- アベンジャーズ ----
 			'アベンジャーズ': 'Avengers_Endgame_2019',
 			'AVENGERS': 'Avengers_Endgame_2019',
@@ -596,7 +607,83 @@ registerPlugin({
 			'ウィンターソルジャー': 'Avengers_Endgame_2019_WinterSoldier',
 			'WONG': 'Avengers_Endgame_2019_Wong',
 			'ウォン': 'Avengers_Endgame_2019_Wong',
+			// ---- トイ・ストーリー 4 ----
+			'TOYSTORY': 'Disney_ToyStory4_Woody_v2',
+			'TOYSTORY4': 'Disney_ToyStory4_Woody_v2',
+			'トイストーリー4': 'Disney_ToyStory4_Woody_v2',
+			'WOODY': 'Disney_ToyStory4_Woody_v2',
+			'ウッディ': 'Disney_ToyStory4_Woody_v2',
+			'BOPEEP': 'Disney_ToyStory4_BoPeep',
+			'ボーピープ': 'Disney_ToyStory4_BoPeep',
+			'BUZZLIGHTYEAR': 'Disney_ToyStory4_Buzz',
+			'バズライトイヤー': 'Disney_ToyStory4_Buzz',
+			'DUCKYBUNNY': 'Disney_ToyStory4_ActualDuckyBunny',
+			'DUCKYANDBUNNY': 'Disney_ToyStory4_ActualDuckyBunny',
+			'PLUSHRUSH': 'Disney_ToyStory4_ActualDuckyBunny',
+			'DUKECABOOM': 'Disney_ToyStory4_DukeCaboom',
+			'FORKY': 'Disney_ToyStory4_Forky',
+			'フォーキー': 'Disney_ToyStory4_Forky',
+			'GIGGLEMCDIMPLES': 'Disney_ToyStory4_DuckyBunny',
+			'いつまでも君はともだち': 'ToyStory4_Woody_Japan',
+			'トイ4の夏がきた': 'ToyStory4_Woody_Japan',
+			// [#夢のオールスター マイナビオールスターゲーム2019](https://blog.twitter.com/ja_jp/topics/events/2019/All-star-game.html)
+			'マイナビオールスターゲーム2019': 'AllStar_Baseball_Game_2019',
+			'オールスター': 'AllStar_Baseball_Game_2019',
+			'夢のオールスター': 'AllStar_Baseball_Game_2019',
+			'球宴': 'AllStar_Baseball_Game_2019',
+			// ---- AmazonPrimeDay_2019 ----
+			'プライムデー': 'AmazonPrimeDay_2019_Japan',
+			'プライムセール': 'AmazonPrimeDay_2019_Japan',
+			'アマゾン': 'AmazonPrimeDay_2019_Japan',
+			'AMAZON': 'AmazonPrimeDay_2019',
+			'PRIMEDAY': 'AmazonPrimeDay_2019',
+			'PRIMEDAYAMAZON': 'AmazonHotSale2019',
+			// ---- Disney_Aladdin_2019 ----
+			'ALADDIN': 'Disney_Aladdin_2019',
+			'アラジン': 'Disney_Aladdin_2019',
+			'JASMINE': 'Disney_Aladdin_Jasmine',
+			'ジャスミン': 'Disney_Aladdin_Jasmine',
+			'WHOLENEWWORLD': 'Disney_Aladdin_Jasmine',
+			'AWHOLENEWWORLD': 'Disney_Aladdin_Jasmine',
+			'GENIE': 'Disney_Aladdin_Genie',
+			'ジーニー': 'Disney_Aladdin_Genie',
+			'FRIENDLIKEME': 'Disney_Aladdin_Genie',
+			'MAGICLAMP': 'Disney_Aladdin_Lamp',
+			'魔法のランプ': 'Disney_Aladdin_Lamp',
+			'アラジンと新しい世界へ': 'Disney_Aladdin_Lamp',
+			// ---- G20Osaka_2019 ----
+			// https://twitter.com/TwitterGovJP/status/1135375663060344832
+			'G20': 'G20Osaka_2019',
+			'G20SUMMIT': 'G20Osaka_2019',
+			'G20JAPAN': 'G20Osaka_2019',
+			'G20OSAKA': 'G20Osaka_2019',
+			'G2019': 'G20Osaka_2019',
+			'G20大阪': 'G20Osaka_2019',
+			'G20大阪サミット': 'G20Osaka_2019',
+			'G20サミット': 'G20Osaka_2019',
+			'G20OSAKASUMMIT': 'G20Osaka_2019',
+			'G20INOSAKA': 'G20Osaka_2019',
+			'G20閣僚会合': 'G20Osaka_2019',
+			// [#参院選2019 Twitter上でニッポンの政治を知ろう、語ろう](https://blog.twitter.com/ja_jp/topics/company/2019/election_2019.html)
+			'選挙': 'GoVoteUpperHouseElection_2019',
+			'選挙に行こう': 'GoVoteUpperHouseElection_2019',
+			'参院選': 'GoVoteUpperHouseElection_2019',
+			'参院選2019': 'GoVoteUpperHouseElection_2019',
+			'令和初の参院選': 'GoVoteUpperHouseElection_2019',
+			// [7月17日は #世界絵文字デー](https://blog.twitter.com/ja_jp/topics/events/2019/World-Emoji-Day-2019.html)
+			'世界絵文字デー': 'WorldEmojiDay_2019',
+			'鳥取': 'WorldEmojiDay_2019',
+			'鳥取県': 'WorldEmojiDay_2019',
+			'絵文字で鳥取県': 'WorldEmojiDay_2019',
+			'おしどり': 'WorldEmojiDay_2019',
+			'絵文字': 'WorldEmojiDay_2019',
+			'EMOJI': 'WorldEmojiDay_2019',
+			'WORLDEMOJIDAY': 'WorldEmojiDay_2019',
 			// ---- その他 ----
+			'午後の紅茶': 'KIRIN_GT_2_Japan_2019_Emoji_V2',
+			'午後ティー': 'KIRIN_GT_2_Japan_2019_Emoji_V2',
+			'ロマサガRS': 'romasaga_rs_2019',
+			'シノアリス': 'Sinoalice_June2019',
 			'GAMEOFTHRONES': 'GameofThrones_S8_2018_v2',
 			'とと姉ちゃん': 'NHKMorningDrama',
 			'高校野球': 'JapanHighSchoolBaseballEmoji',
@@ -609,16 +696,15 @@ registerPlugin({
 			var hashtag = elHashtag.innerHTML.match(hashtag_pattern);
 			if (!hashtag || hashtag.length < 2) return;
 
-			var elEmoji, index = hashtag[2].toUpperCase();
+			var index = hashtag[2].toUpperCase();
 			if (countryFlags[index]) {
-				elEmoji = createFlagElement(twemoji.parse(countryFlags[index].slice(2).map(function(s) {
+				elHashtag.innerHTML += countryFlags[index].slice(2).map(function(s) {
 					return twemoji.convert.fromCodePoint(s);
-				}).join('')));
+				}).join('');
+				twemoji.parse(elHashtag);
 			} else if (organization[index]) {
-				elEmoji = createFlagElement(getFlagImageHTML(organization[index]));
+				elHashtag.innerHTML += getFlagImageHTML(organization[index]);
 			}
-
-			elEmoji && elHashtag.parentNode.insertBefore(elEmoji, elHashtag.nextSibling);
 		});
 
 		function getFlagImageHTML(iconName) {
@@ -629,13 +715,6 @@ registerPlugin({
 				iconName,
 				'.png">'
 			].join('');
-		}
-
-		function createFlagElement(innerHTML) {
-			var el = document.createElement('span');
-			el.className = 'flag';
-			el.innerHTML = innerHTML;
-			return el;
 		}
 	}
 });
